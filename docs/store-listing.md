@@ -64,3 +64,19 @@ mal configurado, un tag que no dispara) sin salir de la herramienta ni conceder 
 **Texto para "Qué hay de nuevo"**:
 > Nueva captura de página completa con editor: señala con flechas, cajas y texto, y difumina datos
 > sensibles antes de compartir. Sin permisos nuevos y sin que la imagen salga de tu navegador.
+
+---
+
+## Actualización v1.4.1 (agosto 2026)
+
+Corrección sobre la 1.4.0: el copiado al portapapeles de la captura anotada.
+
+- **No añade permisos.** Se usa la Clipboard API estándar bajo gesto del usuario.
+  **No se añade `clipboardWrite`** a propósito: generaría el aviso "Modificar los datos que
+  copias y pegas" y Chrome desactivaría la extensión a los usuarios ya instalados hasta que
+  aceptasen el permiso nuevo.
+- La composición de la imagen sigue siendo local, en un `<canvas>`; no se sube nada.
+
+**Texto para "Qué hay de nuevo"**:
+> Corrige el copiado de la captura: el clic derecho ya ofrece "Copiar imagen con anotaciones",
+> y lo copiado incluye las flechas, textos y difuminados. También con el botón Copiar y Ctrl/⌘+C.

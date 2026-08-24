@@ -125,7 +125,25 @@ aparecen solo cuando ya hay una captura guardada).
   alto de la captura
 - El difuminado muestrea de la imagen original y la pixela, así que en el PNG exportado el
   dato es irrecuperable, no es un efecto visual reversible
-- La imagen a tamaño completo solo se compone una vez, al pulsar "Descargar PNG"
+- La imagen a tamaño completo solo se compone una vez, al copiar o al descargar
+  (`componerBlob()`), y siempre **con** las anotaciones y **sin** el marco de selección
+- **Copiar al portapapeles**: el "Copiar imagen" nativo de Chrome no sirve — el clic derecho
+  cae sobre la capa de anotación, y aunque cayera sobre el `<img>` copiaría el fondo sin las
+  flechas. Por eso el clic derecho abre un **menú propio** (copiar / descargar), hay botón
+  "Copiar" en la barra y atajo Ctrl/⌘+C (que se aparta si hay texto seleccionado).
+  Se usa `navigator.clipboard.write([new ClipboardItem({"image/png": componerBlob()}))])`
+  pasando la **promesa**, no el blob resuelto: componer 50 MP tarda y Chrome daría por
+  caducado el gesto del usuario. **No añadir el permiso `clipboardWrite`**: genera el aviso
+  "Modificar los datos que copias y pegas", y un permiso nuevo desactiva la extensión a los
+  usuarios ya instalados hasta que lo acepten. Con el gesto del usuario basta.
+  El menú **no puede cerrarse en el `mousedown`**: si el botón se quita del DOM antes del
+  `mouseup`, el navegador nunca emite su `click` y la opción no hace nada. Se cierra solo
+  cuando la pulsación cae fuera (`alPulsarFuera`). El `contextmenu` se intercepta en
+  **`document` y en fase de captura**: si algún punto de la imagen se escapa al menú nativo,
+  Chrome copia la capa de anotación —transparente, solo las flechas— en vez de la captura.
+- La barra muestra la **versión** (`chrome.runtime.getManifest().version`): recargar la
+  extensión no recarga las pestañas del visor ya abiertas, así que sin ese sello es
+  imposible saber si lo que falla es el código nuevo o una pestaña con el viejo.
 - El campo de texto se enfoca en el siguiente frame y su `blur` se ignora durante 150 ms:
   la acción por defecto del `mousedown` del canvas le robaba el foco y lo cerraba al nacer
 

@@ -285,37 +285,130 @@ function pedirTexto(pos, editarIdx) {
   });
 }
 
-// Única vez que se compone la imagen entera
-function exportar(btn) {
-  const txt = btn.textContent;
-  btn.disabled = true;
-  btn.textContent = "Generando…";
-  setTimeout(() => {
+// Único punto donde se crea un canvas del tamaño real de la imagen, y solo al
+// copiar o descargar. Incluye las anotaciones, nunca el marco de selección.
+function componerBlob() {
+  return new Promise((resolve, reject) => {
     try {
       const out = document.createElement("canvas");
       out.width = img.naturalWidth;
       out.height = img.naturalHeight;
       const o = out.getContext("2d");
       o.drawImage(img, 0, 0);
-      anotaciones.forEach((a) => pintar(o, a));   // sin el marco de selección
-      out.toBlob((blob) => {
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = (rec && rec.filename) || "captura.png";
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 4000);
-        btn.disabled = false;
-        btn.textContent = txt;
-      }, "image/png");
+      anotaciones.forEach((a) => pintar(o, a));
+      out.toBlob((b) => (b ? resolve(b) : reject(new Error("el navegador no pudo generar el PNG"))), "image/png");
     } catch (e) {
-      btn.disabled = false;
-      btn.textContent = txt;
-      alert("No se pudo generar el PNG: " + e.message);
+      reject(e);
     }
-  }, 30);
+  });
+}
+
+function avisar(msg, esError) {
+  const previo = document.getElementById("shotToast");
+  if (previo) previo.remove();
+  const t = document.createElement("div");
+  t.id = "shotToast";
+  t.className = "shot-toast" + (esError ? " is-error" : "");
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), esError ? 6000 : 2200);
+}
+
+async function copiar(btn) {
+  if (!navigator.clipboard || typeof ClipboardItem === "undefined") {
+    avisar("Este navegador no permite copiar imágenes al portapapeles. Usa Descargar PNG.", true);
+    return;
+  }
+  const txt = btn ? btn.textContent : null;
+  if (btn) { btn.disabled = true; btn.textContent = "Copiando…"; }
+  try {
+    // Se le pasa la PROMESA a ClipboardItem, no el blob ya resuelto: componer una
+    // captura de 50 MP tarda, y si se esperase antes de llamar a write() Chrome
+    // daría por caducado el gesto del usuario y rechazaría la escritura.
+    // Se guarda el blob al vuelo para poder informar de lo que se ha copiado:
+    // si el tamaño no es el de la captura completa, algo ha ido mal.
+    let copiado = null;
+    const item = new ClipboardItem({
+      "image/png": componerBlob().then((b) => { copiado = b; return b; }),
+    });
+    await navigator.clipboard.write([item]);
+    avisar("Copiado: " + img.naturalWidth + "×" + img.naturalHeight + " px"
+      + (copiado ? " · " + fmtSize(copiado.size) : "")
+      + " · " + anotaciones.length + " anotacion" + (anotaciones.length === 1 ? "" : "es"));
+  } catch (e) {
+    avisar("No se pudo copiar: " + e.message + ". Usa Descargar PNG.", true);
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = txt; }
+  }
+}
+
+async function exportar(btn) {
+  const txt = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = "Generando…";
+  try {
+    const blob = await componerBlob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = (rec && rec.filename) || "captura.png";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+  } catch (e) {
+    avisar("No se pudo generar el PNG: " + e.message, true);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = txt;
+  }
+}
+
+// El "Copiar imagen" nativo de Chrome copiaría solo el fondo, sin las
+// anotaciones, así que se sustituye por un menú propio.
+function cerrarMenu() {
+  const m = document.getElementById("shotMenu");
+  if (m) m.remove();
+  document.removeEventListener("mousedown", alPulsarFuera, true);
+  window.removeEventListener("scroll", cerrarMenu);
+  window.removeEventListener("resize", cerrarMenu);
+}
+
+// Cerrar solo si la pulsación cae FUERA del menú. Si se cierra en el mousedown
+// de un botón del propio menú, el botón desaparece del DOM antes del mouseup y
+// el navegador ya no llega a emitir su "click": la opción no hacía nada.
+function alPulsarFuera(ev) {
+  const m = document.getElementById("shotMenu");
+  if (m && !m.contains(ev.target)) cerrarMenu();
+}
+
+function menuContextual(ev) {
+  ev.preventDefault();
+  cerrarMenu();
+  const m = document.createElement("div");
+  m.id = "shotMenu";
+  m.className = "shot-menu";
+  [
+    ["📋  Copiar imagen con anotaciones", () => copiar(document.getElementById("shotPageCopy"))],
+    ["⬇  Descargar PNG", () => exportar(document.getElementById("shotPageDownload"))],
+  ].forEach(([texto, accion]) => {
+    const b = document.createElement("button");
+    b.textContent = texto;
+    b.addEventListener("click", () => { cerrarMenu(); accion(); });
+    m.appendChild(b);
+  });
+  document.body.appendChild(m);
+
+  const r = m.getBoundingClientRect();
+  m.style.left = Math.min(ev.clientX, window.innerWidth - r.width - 8) + "px";
+  m.style.top = Math.min(ev.clientY, window.innerHeight - r.height - 8) + "px";
+
+  // En el siguiente frame, para que no lo cierre el propio evento que lo abrió
+  requestAnimationFrame(() => {
+    document.addEventListener("mousedown", alPulsarFuera, true);
+    window.addEventListener("scroll", cerrarMenu);
+    window.addEventListener("resize", cerrarMenu);
+  });
 }
 
 (async function () {
@@ -330,6 +423,8 @@ function exportar(btn) {
   if (!rec || !rec.blob) {
     body.innerHTML = '<p class="shot-page-empty">No hay ninguna captura guardada. Haz una desde el icono de la cámara de la extensión.</p>';
     btnDescargar.disabled = true;
+    const bc = document.getElementById("shotPageCopy");
+    if (bc) bc.disabled = true;
     if (tools) tools.style.display = "none";
     return;
   }
@@ -357,6 +452,14 @@ function exportar(btn) {
   body.appendChild(stage);
   document.body.appendChild(capa);   // fixed: fuera del flujo del documento
   render();
+
+  try {
+    const v = chrome.runtime.getManifest().version;
+    const t = document.querySelector(".shot-page-title");
+    if (t) t.appendChild(Object.assign(document.createElement("span"), {
+      className: "shot-page-ver", textContent: "v" + v,
+    }));
+  } catch (e) {}
 
   meta.textContent = [
     rec.hostname || "",
@@ -395,10 +498,18 @@ function exportar(btn) {
   document.addEventListener("keydown", (e) => {
     if ((e.metaKey || e.ctrlKey) && e.key === "z") { e.preventDefault(); deshacer(); return; }
     if ((e.key === "Delete" || e.key === "Backspace") && seleccion >= 0) { e.preventDefault(); borrarSeleccion(); }
-    if (e.key === "Escape") { seleccion = -1; pedirRender(); }
+    if ((e.metaKey || e.ctrlKey) && (e.key === "c" || e.key === "C")) {
+      // Si hay texto seleccionado (la ruta, el tamaño…) manda el copiado normal
+      if (String(window.getSelection() || "").length) return;
+      e.preventDefault();
+      copiar(document.getElementById("shotPageCopy"));
+      return;
+    }
+    if (e.key === "Escape") { cerrarMenu(); seleccion = -1; pedirRender(); }
   });
 
   capa.addEventListener("mousedown", (e) => {
+    if (e.button !== 0) return;          // el derecho abre el menú, no dibuja
     const p = aImagen(e);
 
     if (tool === "move") {
@@ -473,4 +584,12 @@ function exportar(btn) {
   });
 
   btnDescargar.addEventListener("click", () => exportar(btnDescargar));
+
+  const btnCopiar = document.getElementById("shotPageCopy");
+  btnCopiar.addEventListener("click", () => copiar(btnCopiar));
+  document.addEventListener("contextmenu", (ev) => {
+    // Sobre la imagen manda nuestro menú; el nativo copiaría la capa de
+    // anotación (transparente, solo las flechas) en vez de la captura.
+    if (ev.target === capa || ev.target === img || stage.contains(ev.target)) menuContextual(ev);
+  }, true);
 })();

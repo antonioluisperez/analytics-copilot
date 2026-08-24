@@ -3693,6 +3693,16 @@ body.shot-page {
 
 .shot-page-logo { width: 20px; height: 20px; border-radius: 5px; }
 
+.shot-page-ver {
+  margin-left: 2px;
+  padding: 1px 6px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #94A3B8;
+  font-size: 10.5px;
+  font-weight: 700;
+}
+
 .shot-page-meta {
   flex: 1;
   font-size: 11.5px;
@@ -3724,6 +3734,66 @@ body.shot-page {
   max-width: 100%;
   height: auto;
 }
+
+.shot-btn-ghost {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #E2E8F0;
+}
+
+.shot-btn-ghost:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.shot-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 26px;
+  transform: translateX(-50%);
+  z-index: 12;
+  max-width: min(560px, 90vw);
+  padding: 10px 16px;
+  background: #111827;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+  color: #E2E8F0;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.shot-toast.is-error { border-color: #B91C1C; color: #FCA5A5; }
+
+/* Menú del clic derecho sobre la captura */
+.shot-menu {
+  position: fixed;
+  z-index: 10;
+  min-width: 210px;
+  padding: 5px;
+  background: #111827;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 9px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+}
+
+.shot-menu button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #E2E8F0;
+  font: inherit;
+  font-size: 12.5px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.shot-menu button:hover { background: rgba(255, 255, 255, 0.12); color: #fff; }
 
 /* Capa de anotación: fija y solo del tamaño de lo visible (ver shot.js) */
 .shot-layer {
