@@ -31,7 +31,7 @@ Funciona como **popup** en la barra de Chrome y como **panel dentro de DevTools*
 
 ### Alternativa: modo desarrollador (para trastear con el código)
 
-1. **[⬇ Descarga el ZIP de la última versión](https://github.com/alpc-data-analyst/analytics-copilot/releases/latest)** y descomprímelo
+1. **[⬇ Descarga el ZIP de la última versión](https://github.com/antonioluisperez/analytics-copilot/releases/latest)** y descomprímelo
 2. Abre `chrome://extensions/` y activa el **Modo de desarrollador** (interruptor arriba a la derecha)
 3. Pulsa **"Cargar descomprimida"** y selecciona la carpeta descomprimida
 

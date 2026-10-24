@@ -13,15 +13,15 @@ Analytics Copilot es una extensión de Chrome (Manifest V3) con **10 herramienta
 
 | Qué | URL |
 |---|---|
-| Repositorio (código, MIT) | https://github.com/alpc-data-analyst/analytics-copilot |
-| Descarga (ZIP, release) | https://github.com/alpc-data-analyst/analytics-copilot/releases/latest |
-| Política de privacidad | https://github.com/alpc-data-analyst/analytics-copilot/blob/main/PRIVACY.md |
+| Repositorio (código, MIT) | https://github.com/antonioluisperez/analytics-copilot |
+| Descarga (ZIP, release) | https://github.com/antonioluisperez/analytics-copilot/releases/latest |
+| Política de privacidad | https://github.com/antonioluisperez/analytics-copilot/blob/main/PRIVACY.md |
 | Chrome Web Store | https://chromewebstore.google.com/detail/analytics-copilot/icnecmnkghkklcjmolmmcljdodeglfpe — **YA APROBADA**: el botón principal debe ser "Añadir a Chrome" apuntando aquí |
 | LinkedIn del autor | https://www.linkedin.com/in/antonio-luis-perez-carmona/ |
 
 ## Imágenes (URLs públicas, listas para usar)
 
-Base: `https://raw.githubusercontent.com/alpc-data-analyst/analytics-copilot/main/`
+Base: `https://raw.githubusercontent.com/antonioluisperez/analytics-copilot/main/`
 
 - `icons/logo.svg` — logo vectorial (pulso sobre badge slate `#1F2937`, punto azul `#38BDF8`)
 - `docs/screenshots/menu.jpg` — **hero/principal**: la parrilla de herramientas (1280×800)

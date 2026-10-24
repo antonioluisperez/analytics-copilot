@@ -4,7 +4,7 @@ Extensión de Chrome (Manifest V3) de **QA de analítica web**, de Antonio Luis 
 Publicada en la Chrome Web Store y en GitHub con licencia MIT.
 
 - Store: https://chromewebstore.google.com/detail/analytics-copilot/icnecmnkghkklcjmolmmcljdodeglfpe
-- Repo: https://github.com/alpc-data-analyst/analytics-copilot
+- Repo: https://github.com/antonioluisperez/analytics-copilot
 - Landing: https://antonioluisperez.com/analytics-copilot/ (la mantiene **otro** proyecto de Claude)
 
 ## Estructura
@@ -66,6 +66,6 @@ Antonio sube el ZIP a la Store a mano; eso no lo hace Claude.
 
 - Todo en **español**: UI, documentación y mensajes de commit
 - **Sin rastro de empresas ni de Claude** en código, docs o commits — el repo es personal y público
-- Los commits van a nombre de `alpc-data-analyst`
+- Los commits van a nombre de `antonioluisperez`
 - **No empujar a GitHub sin que Antonio lo pida.** Trabajar en local y avisar de que está listo
 - No inventar ni generar capturas de la extensión: si falta una vista, pedírsela
