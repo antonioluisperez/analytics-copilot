@@ -135,6 +135,15 @@ document.querySelectorAll(".tab-content").forEach((tab) => {
   backBtn.innerHTML = "← Inicio";
   backBtn.addEventListener("click", navigateHome);
   backBar.appendChild(backBtn);
+  // Nombre de la herramienta, el mismo de su tarjeta en Inicio
+  const key = Object.keys(TAB_MAP).find((k) => TAB_MAP[k] === tab.id);
+  const label = key && document.querySelector('.home-card[data-tab="' + key + '"] .home-label');
+  if (label) {
+    const title = document.createElement("span");
+    title.className = "tool-back-title";
+    title.textContent = label.textContent;
+    backBar.appendChild(title);
+  }
   tab.insertBefore(backBar, tab.firstChild);
 });
 
@@ -227,6 +236,7 @@ async function updateLabHomeBanner() {
     }
 
     if (activeItems.length === 0) return;
+    activeItems.push(labConfig.domain ? "en " + labConfig.domain : "en todas las webs");
 
     // Create banner
     const banner = document.createElement("div");
@@ -263,6 +273,7 @@ function insertTtWarning(target) {
 const tagsScanBtn = document.getElementById("tagsScanBtn");
 const tagsResults = document.getElementById("tagsResults");
 const tagsUrl = document.getElementById("tagsUrl");
+let tagBlockHandlerOn = false;
 
 // Tag definitions: how to detect each tool
 const TAG_DEFINITIONS = [
@@ -285,7 +296,8 @@ const TAG_DEFINITIONS = [
       });
       // Inline scripts
       ctx.inline.forEach((s) => {
-        const ms = s.match(/GTM-[A-Z0-9]{4,}/g);
+        // El lookbehind evita falsos positivos tipo "XGTM-1234" o "IMG-12345"
+        const ms = s.match(/(?<![A-Za-z0-9_-])GTM-[A-Z0-9]{4,}/g);
         if (ms) ms.forEach((id) => ids.add(id));
       });
       // google_tag_manager global
@@ -306,7 +318,7 @@ const TAG_DEFINITIONS = [
       });
       // Inline scripts
       ctx.inline.forEach((s) => {
-        const ms = s.match(/(G-[A-Z0-9]{5,})/g);
+        const ms = s.match(/(?<![A-Za-z0-9_-])(G-[A-Z0-9]{5,})/g);
         if (ms) ms.forEach((id) => ids.add(id));
       });
       // dataLayer config calls
@@ -337,7 +349,7 @@ const TAG_DEFINITIONS = [
       });
       // Inline scripts
       ctx.inline.forEach((s) => {
-        const ms = s.match(/AW-[0-9]{5,}/g);
+        const ms = s.match(/(?<![A-Za-z0-9_-])AW-[0-9]{5,}/g);
         if (ms) ms.forEach((id) => ids.add(id));
       });
       // dataLayer config
@@ -363,7 +375,7 @@ const TAG_DEFINITIONS = [
       const ids = new Set();
       // Only count real UA-XXXXX-X IDs from inline scripts
       ctx.inline.forEach((s) => {
-        const ms = s.match(/UA-[0-9]+-[0-9]+/g);
+        const ms = s.match(/(?<![A-Za-z0-9_-])UA-[0-9]+-[0-9]+/g);
         if (ms) ms.forEach((id) => ids.add(id));
       });
       // ga() global with actual tracker IDs
@@ -1098,6 +1110,10 @@ function scanPageTags() {
   try {
     if (window.dataLayer && Array.isArray(window.dataLayer)) {
       window.dataLayer.forEach(function (entry) {
+        // gtag() empuja `arguments`, no un array
+        if (entry && Object.prototype.toString.call(entry) === "[object Arguments]") {
+          entry = Array.prototype.slice.call(entry);
+        }
         if (Array.isArray(entry) && entry[0] === "config" && entry[1]) {
           dlConfigs.push(String(entry[1]));
         }
@@ -1138,9 +1154,9 @@ function scanPageTags() {
 
   // Scan all script srcs for any AW- patterns
   scriptSrcs.forEach(function (s) {
-    var ms = s.match(/AW-\d{5,}/g);
+    var ms = s.match(/(?<![A-Za-z0-9_-])AW-\d{5,}/g);
     if (ms) ms.forEach(function (id) { allGoogleIds.push(id); });
-    var gs = s.match(/G-[A-Z0-9]{5,}/g);
+    var gs = s.match(/(?<![A-Za-z0-9_-])G-[A-Z0-9]{5,}/g);
     if (gs) gs.forEach(function (id) { allGoogleIds.push(id); });
   });
 
@@ -1257,7 +1273,10 @@ async function runTagScan() {
           await chrome.declarativeNetRequest.updateDynamicRules({ removeRuleIds: orphanIds });
         }
 
-        labBlockedPatterns = storedPatterns;
+        // En otra web los bloqueos del Lab no actúan: no se marcan como bloqueados
+        let aqui = "";
+        try { aqui = caGetETLDplus1(new URL(ctx.url).hostname); } catch (e) {}
+        labBlockedPatterns = (!lc || !lc.domain || lc.domain === aqui) ? storedPatterns : [];
       }
     } catch (e) {}
 
@@ -1372,8 +1391,8 @@ async function runTagScan() {
     let html = "";
 
     html += `<div class="tags-summary">`;
-    html += `<span class="tags-summary-badge"><span class="tags-summary-num">${detected.length}</span> herramientas</span>`;
-    html += `<span class="tags-summary-badge"><span class="tags-summary-num">${totalIds}</span> IDs</span>`;
+    html += `<span class="tags-summary-badge"><span class="tags-summary-num">${detected.length}</span> herramienta${detected.length !== 1 ? "s" : ""}</span>`;
+    html += `<span class="tags-summary-badge"><span class="tags-summary-num">${totalIds}</span> ID${totalIds !== 1 ? "s" : ""}</span>`;
     html += `</div>`;
 
     for (const [catKey, catLabel] of Object.entries(categories)) {
@@ -1434,10 +1453,15 @@ async function runTagScan() {
       if (lc) {
         labBlocks = lc.blocks || [];
         labNextRuleId = lc.nextRuleId || 1000;
+        labDomain = lc.domain || null;
       }
     } catch (e) {}
 
-    // Delegated handler for block toggles
+    // Delegated handler for block toggles. Se registra una sola vez: tagsResults
+    // sobrevive a cada escaneo y, si no, cada re-escaneo sumaba otro handler y
+    // todos aplicaban las reglas a la vez ("Rule with id … does not have a unique ID").
+    if (tagBlockHandlerOn) return;
+    tagBlockHandlerOn = true;
     tagsResults.addEventListener("change", async function tagBlockHandler(e) {
       const cb = e.target;
       if (!cb.closest || !cb.closest(".tags-block-switch")) return;
@@ -1460,6 +1484,9 @@ async function runTagScan() {
       try {
         const { labConfig: cur } = await chrome.storage.local.get("labConfig");
         const config = cur || {};
+        // El Lab pasa a actuar en esta web (ver labAplicaEn en background.js)
+        labDomain = (await labDominioActual()) || labDomain;
+        config.domain = labDomain;
         config.blocks = labBlocks;
         config.nextRuleId = labNextRuleId;
         await chrome.storage.local.set({ labConfig: config });
@@ -2662,7 +2689,7 @@ async function activateTimeTravel() {
 
   ttActive = true;
   getActiveTabId().then((tid) => { if (tid) chrome.runtime.sendMessage({ type: "widget-refresh", tabId: tid }).catch(() => {}); });
-  ttToggle.textContent = "⏹ Desactivar";
+  ttToggle.innerHTML = '<svg class="icon"><use href="#i-stop"/></svg><span>Desactivar</span>';
   ttToggle.classList.add("btn-stop");
   ttStatus.textContent = "Viajando en el tiempo";
   ttStatus.className = "tt-badge tt-badge-active";
@@ -2684,7 +2711,7 @@ async function deactivateTimeTravel() {
 
   ttActive = false;
   getActiveTabId().then((tid) => { if (tid) chrome.runtime.sendMessage({ type: "widget-refresh", tabId: tid }).catch(() => {}); });
-  ttToggle.textContent = "⏩ Activar Time Travel";
+  ttToggle.innerHTML = '<svg class="icon"><use href="#i-fast-forward"/></svg><span>Activar Time Travel</span>';
   ttToggle.classList.remove("btn-stop");
   ttStatus.textContent = "Inactivo";
   ttStatus.className = "tt-badge tt-badge-idle";
@@ -2846,6 +2873,9 @@ async function clearSiteData() {
     const originScoped = {};
     if (doStorage) { originScoped.localStorage = true; originScoped.indexedDB = true; }
     if (doSW) { originScoped.serviceWorkers = true; originScoped.cacheStorage = true; }
+    // Cache Storage sí admite filtro por origen: nunca en el borrado global de abajo,
+    // que se llevaría los datos offline de todas las webs (PWAs incluidas)
+    if (doCache) { originScoped.cacheStorage = true; }
     if (doCookies) { originScoped.cookies = true; }
     if (Object.keys(originScoped).length > 0) {
       tasks.push(chrome.browsingData.remove({ origins: [origin] }, originScoped).catch(() => {}));
@@ -2855,7 +2885,7 @@ async function clearSiteData() {
     // so it's fast — large global cache clears can take 10-30s.
     if (doCache) {
       const sinceOneHour = Date.now() - 60 * 60 * 1000;
-      tasks.push(chrome.browsingData.remove({ since: sinceOneHour }, { cache: true, cacheStorage: true }).catch(() => {}));
+      tasks.push(chrome.browsingData.remove({ since: sinceOneHour }, { cache: true }).catch(() => {}));
     }
 
     await Promise.all(tasks);
@@ -3045,11 +3075,16 @@ function scanConsentMode() {
   } catch (e) {}
 
   // 2. Scan dataLayer for consent commands (for history + fill missing signals)
+  // gtag() empuja el objeto `arguments`, no un array: hay que tratarlo como tal
+  // o se pierden todos los gtag('consent'|'set', …) del snippet estándar.
   try {
     var dl = window.dataLayer;
     if (dl && Array.isArray(dl)) {
       for (var i = 0; i < dl.length; i++) {
         var entry = dl[i];
+        if (entry && Object.prototype.toString.call(entry) === "[object Arguments]") {
+          entry = Array.prototype.slice.call(entry);
+        }
 
         if (Array.isArray(entry) && entry[0] === "consent") {
           result.detected = true;
@@ -3282,7 +3317,8 @@ function consentNetworkInterceptor() {
   // Intercept fetch
   var origFetch = window.fetch;
   window.fetch = function (input) {
-    var url = typeof input === "string" ? input : (input && input.url) || "";
+    // string, Request (lleva .url) o URL (se convierte con String)
+    var url = input && input.url ? input.url : String(input || "");
     extractParams(url);
     return origFetch.apply(this, arguments);
   };
@@ -3957,7 +3993,8 @@ function renderConsentResults(data) {
     row.className = "cm-sig-row";
     row.title = CONSENT_SIGNAL_INFO[ct.key] || "";
     row.innerHTML =
-      '<span class="cm-sig-name">' + ct.label + '</span>' +
+      // <wbr> tras cada "_": los nombres largos parten ahí en vez de cortarse
+      '<span class="cm-sig-name">' + ct.label.replace(/_/g, "_<wbr>") + '</span>' +
       pill(defVal, { sensitive: SENSITIVE_SIGNALS.indexOf(ct.key) !== -1 }) +
       pill(updVal, { updateCol: true });
     consentSignalsBody.appendChild(row);
@@ -4325,6 +4362,8 @@ const CA_TWO_PART_TLDS = new Set([
 ]);
 function caGetETLDplus1(host) {
   if (!host) return "";
+  // Una IP (127.0.0.1, entornos de desarrollo) es su propio "dominio", no "0.1"
+  if (/^\d{1,3}(\.\d{1,3}){3}$/.test(host) || host.includes(":")) return host;
   const h = host.replace(/^www\./, "");
   const parts = h.split(".");
   if (parts.length <= 2) return h;
@@ -5458,6 +5497,41 @@ const labBlocksBadge = document.getElementById("labBlocksBadge");
 
 let labBlocks = []; // { id, pattern, enabled }
 let labNextRuleId = 1000;
+let labDomain = null; // eTLD+1 donde actúa el Lab (null = configuración antigua, todas las webs)
+
+// eTLD+1 de la pestaña activa: es el dominio que toma el Lab al guardar
+async function labDominioActual() {
+  try {
+    const tabId = await getActiveTabId();
+    const tab = tabId && await chrome.tabs.get(tabId);
+    if (!tab || !tab.url || !tab.url.startsWith("http")) return null;
+    return caGetETLDplus1(new URL(tab.url).hostname);
+  } catch (e) {
+    return null;
+  }
+}
+
+function labHayAlgoActivo() {
+  return labBlocks.some(b => b.enabled) || !!(labGtmEnabled && labGtmEnabled.checked) || !!(labDlEnabled && labDlEnabled.checked);
+}
+
+// Línea que dice en qué web actúa el Lab
+async function labPintarAmbito() {
+  const el = document.getElementById("labScope");
+  if (!el) return;
+  const aqui = await labDominioActual();
+  el.classList.remove("lab-scope-warn");
+  if (labDomain && labHayAlgoActivo()) {
+    el.textContent = labDomain === aqui || !aqui
+      ? "Activo solo en " + labDomain + " y sus subdominios."
+      : "Activo en " + labDomain + ". Si guardas aquí, pasa a " + aqui + ".";
+  } else if (labHayAlgoActivo()) {
+    el.textContent = "Activo en todas las webs. Guarda para limitarlo a " + (aqui || "esta web") + ".";
+    el.classList.add("lab-scope-warn");
+  } else {
+    el.textContent = "Al guardar, solo actuará en " + (aqui || "esta web") + " y sus subdominios.";
+  }
+}
 
 // ---- Reflect feature state visually on cards ----
 function updateLabCardStates() {
@@ -5481,6 +5555,7 @@ function updateLabCardStates() {
       labBlocksBadge.hidden = true;
     }
   }
+  labPintarAmbito();
 }
 
 // ---- Load saved config ----
@@ -5493,6 +5568,7 @@ async function labLoadConfig() {
 
   labBlocks = labConfig.blocks || [];
   labNextRuleId = labConfig.nextRuleId || 1000;
+  labDomain = labConfig.domain || null;
 
   if (labConfig.gtm) {
     labGtmEnabled.checked = labConfig.gtm.enabled || false;
@@ -5509,7 +5585,9 @@ async function labLoadConfig() {
 
 // ---- Save config ----
 async function labSaveConfig() {
+  labDomain = (await labDominioActual()) || labDomain;
   const config = {
+    domain: labDomain,
     blocks: labBlocks,
     nextRuleId: labNextRuleId,
     gtm: {
@@ -5522,6 +5600,7 @@ async function labSaveConfig() {
     },
   };
   await chrome.storage.local.set({ labConfig: config });
+  labPintarAmbito();
 }
 
 // ---- Block management ----
@@ -5570,7 +5649,15 @@ function renderLabBlocks() {
 }
 
 // ---- Apply blocking rules via declarativeNetRequest ----
-async function labApplyBlockRules() {
+// En cola: dos llamadas solapadas leerían las mismas reglas y la segunda
+// intentaría añadir IDs que la primera ya creó.
+let labApplyQueue = Promise.resolve();
+function labApplyBlockRules() {
+  labApplyQueue = labApplyQueue.then(labApplyBlockRulesNow, labApplyBlockRulesNow);
+  return labApplyQueue;
+}
+
+async function labApplyBlockRulesNow() {
   // Guard: declarativeNetRequest may not be available if extension wasn't reloaded after manifest change
   if (!chrome.declarativeNetRequest) {
     labShowStatus("Recarga la extensión en chrome://extensions para activar el bloqueo de requests");
@@ -5589,6 +5676,8 @@ async function labApplyBlockRules() {
       action: { type: "block" },
       condition: {
         urlFilter: b.pattern,
+        // Solo las peticiones que lanza la web del Lab (y sus subdominios)
+        ...(labDomain ? { initiatorDomains: [labDomain] } : {}),
         resourceTypes: ["script", "xmlhttprequest", "sub_frame", "image", "stylesheet", "font", "media", "ping", "other"],
       },
     }));
@@ -5670,6 +5759,7 @@ async function labPushDataLayerNow() {
 async function labClearAll() {
   labBlocks = [];
   labNextRuleId = 1000;
+  labDomain = null;
   labGtmEnabled.checked = false;
   labGtmId.value = "";
   labDlEnabled.checked = false;
@@ -5717,6 +5807,12 @@ if (labClearBtn) labClearBtn.addEventListener("click", labClearAll);
 // Reflect toggle state on cards immediately
 if (labGtmEnabled) labGtmEnabled.addEventListener("change", updateLabCardStates);
 if (labDlEnabled) labDlEnabled.addEventListener("change", updateLabCardStates);
+
+// El interruptor va dentro de la cabecera: su clic no debe plegar la tarjeta.
+// (Antes era un onclick en el HTML, que la CSP de MV3 bloquea.)
+document.querySelectorAll("#tabLab .lab-card-header .lab-switch").forEach((sw) => {
+  sw.addEventListener("click", (e) => e.stopPropagation());
+});
 
 // Collapsible cards — click or Enter/Space on header toggles body; aria-expanded drives chevron
 document.querySelectorAll("#tabLab .lab-card-header").forEach((header) => {

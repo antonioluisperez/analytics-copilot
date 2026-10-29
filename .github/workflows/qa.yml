@@ -1,0 +1,36 @@
+# Prueba la extensión en un Chrome real en cada push a main y en cada pull request.
+# Es el control previo: nada se fusiona ni se publica con esta prueba en rojo.
+name: Prueba en Chrome
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Sintaxis de todos los JS
+        run: for f in $(git ls-files '*.js'); do node --check "$f"; done
+
+      - name: Sin eval ni new Function (motivó un rechazo de la Store)
+        run: |
+          if git grep -nE 'new Function|(^|[^A-Za-z0-9_.])eval\(' -- '*.js' ':!tests/'; then exit 1; fi
+
+      - name: Prueba la extensión en Chrome
+        run: node tests/qa.js
+
+      - name: Capturas del popup
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: capturas
+          path: tests/capturas/

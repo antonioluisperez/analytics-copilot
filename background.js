@@ -69,11 +69,26 @@ async function injectWidgetIntoTab(tabId) {
   }
 }
 
+// El Lab solo actúa en el dominio donde se guardó (labConfig.domain, un eTLD+1,
+// con sus subdominios). Así un GTM o un push de prueba olvidado no se dispara en
+// cualquier otra web. Sin dominio (configs anteriores a la 1.4.2) actúa en todas.
+function labAplicaEn(labConfig, url) {
+  if (!labConfig) return false;
+  if (!labConfig.domain) return true;
+  try {
+    const host = new URL(url).hostname.replace(/^www\./, "");
+    return host === labConfig.domain || host.endsWith("." + labConfig.domain);
+  } catch (e) {
+    return false;
+  }
+}
+
 // Push widget state update to a specific tab
 function pushWidgetUpdate(tabId) {
   (async () => {
     try {
       const data = await chrome.storage.local.get(["timeTravelEnabled", "timeTravelTarget", "labConfig"]);
+      const tab = await chrome.tabs.get(tabId).catch(() => null);
       const auditTabState = auditState.get(tabId);
       let consoleActive = false;
       try {
@@ -84,7 +99,7 @@ function pushWidgetUpdate(tabId) {
         timeTravel: { enabled: !!data.timeTravelEnabled, target: data.timeTravelTarget || null },
         audit: { active: !!(auditTabState && auditTabState.active) },
         consoleCapture: { active: consoleActive },
-        lab: data.labConfig || null,
+        lab: labAplicaEn(data.labConfig, tab && tab.url) ? data.labConfig : null,
       };
       await injectWidgetIntoTab(tabId);
       chrome.tabs.sendMessage(tabId, { type: "widget-state-update", states }).catch(() => {});
@@ -150,27 +165,25 @@ function timeTravelOverride(targetTimestamp) {
 
   function FakeDate() {
     var a = [].slice.call(arguments);
-    if (a.length === 0) {
-      var fn = new RealDate(RealDate.now() + offset);
-      if (this instanceof FakeDate) return fn;
-      return fn.toString();
+    // Sin new, como Date(): la fecha actual (la simulada) en texto, sin mirar argumentos
+    if (!new.target) return new RealDate(RealDate.now() + offset).toString();
+    switch (a.length) {
+      case 0: return new RealDate(RealDate.now() + offset);
+      case 1: return new RealDate(a[0]);
+      case 2: return new RealDate(a[0], a[1]);
+      case 3: return new RealDate(a[0], a[1], a[2]);
+      case 4: return new RealDate(a[0], a[1], a[2], a[3]);
+      case 5: return new RealDate(a[0], a[1], a[2], a[3], a[4]);
+      case 6: return new RealDate(a[0], a[1], a[2], a[3], a[4], a[5]);
+      default: return new RealDate(a[0], a[1], a[2], a[3], a[4], a[5], a[6]);
     }
-    if (this instanceof FakeDate) {
-      switch (a.length) {
-        case 1: return new RealDate(a[0]);
-        case 2: return new RealDate(a[0], a[1]);
-        case 3: return new RealDate(a[0], a[1], a[2]);
-        case 4: return new RealDate(a[0], a[1], a[2], a[3]);
-        case 5: return new RealDate(a[0], a[1], a[2], a[3], a[4]);
-        case 6: return new RealDate(a[0], a[1], a[2], a[3], a[4], a[5]);
-        default: return new RealDate(a[0], a[1], a[2], a[3], a[4], a[5], a[6]);
-      }
-    }
-    return new RealDate(a[0]).toString();
   }
 
-  FakeDate.prototype = Object.create(RealDate.prototype);
-  FakeDate.prototype.constructor = FakeDate;
+  // Mismo prototipo que el Date real: las fechas que devuelve son RealDate, así
+  // que con un prototipo propio `new Date() instanceof Date` daba false y
+  // rompía las librerías que lo comprueban
+  FakeDate.prototype = RealDate.prototype;
+  RealDate.prototype.constructor = FakeDate;
   FakeDate.now = function () { return RealDate.now() + offset; };
   FakeDate.parse = function () { return RealDate.parse.apply(RealDate, arguments); };
   FakeDate.UTC = function () { return RealDate.UTC.apply(RealDate, arguments); };
@@ -194,6 +207,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "widget-get-status") {
     (async () => {
       try {
+        await auditListo;
         const data = await chrome.storage.local.get(["timeTravelEnabled", "timeTravelTarget", "labConfig"]);
         const tabId = sender.tab?.id;
         const auditTabState = tabId ? auditState.get(tabId) : null;
@@ -206,7 +220,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           timeTravel: { enabled: !!data.timeTravelEnabled, target: data.timeTravelTarget || null },
           audit: { active: !!(auditTabState && auditTabState.active) },
           consoleCapture: { active: consoleActive },
-          lab: data.labConfig || null,
+          lab: labAplicaEn(data.labConfig, sender.tab && sender.tab.url) ? data.labConfig : null,
         });
       } catch (e) {
         sendResponse(null);
@@ -248,7 +262,7 @@ chrome.webNavigation.onCommitted.addListener(async (details) => {
 
   try {
     const { labConfig } = await chrome.storage.local.get("labConfig");
-    if (!labConfig) return;
+    if (!labAplicaEn(labConfig, details.url)) return;
 
     // 1. Inject GTM container
     if (labConfig.gtm?.enabled) {
@@ -334,6 +348,8 @@ const TWO_PART_TLDS = new Set([
 
 function getETLDplus1(hostname) {
   if (!hostname) return "";
+  // Una IP (127.0.0.1, entornos de desarrollo) es su propio "dominio", no "0.1"
+  if (/^\d{1,3}(\.\d{1,3}){3}$/.test(hostname) || hostname.includes(":")) return hostname;
   const h = hostname.replace(/^www\./, "");
   const parts = h.split(".");
   if (parts.length <= 2) return h;
@@ -627,7 +643,13 @@ function isMeaningfulCookieChange(name, oldValue, newValue) {
   return true;
 }
 
+// El evento puede ser justo lo que despierta al service worker: espera a que
+// el estado del audit se haya recuperado de storage.session antes de mirarlo
 function onCookieChanged(changeInfo) {
+  auditListo.then(() => procesarCambioCookie(changeInfo));
+}
+
+function procesarCambioCookie(changeInfo) {
   const cookie = changeInfo.cookie;
   if (!cookie) return;
 
@@ -815,17 +837,29 @@ async function restoreAuditState() {
         try {
           await chrome.tabs.get(tid); // verify tab exists
           auditState.set(tid, state);
+          // La caché de valores vive en memoria y se pierde al dormir el worker:
+          // sin sembrarla, el primer cambio de cada cookie saldría como "creada"
+          for (const c of (state.snapshot && state.snapshot.cookies) || []) {
+            if (!cookieValueCache.has(c.domain + "|" + c.name)) cookieValueCache.set(c.domain + "|" + c.name, c.value);
+          }
         } catch (e) {} // tab gone
       }
     }
   } catch (e) {}
 }
-restoreAuditState();
+// Chrome duerme el worker a los ~30 s sin actividad y el estado del audit vive
+// en memoria. Todo listener que lo lea espera a esta promesa: si no, el evento
+// que lo despierta (una navegación cross-domain, un cambio de cookie) se pierde.
+const auditListo = restoreAuditState();
 
 // Message handlers for audit
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (!message.type?.startsWith("audit-")) return;
+  auditListo.then(() => manejarMensajeAudit(message, sendResponse));
+  return true; // async
+});
 
+function manejarMensajeAudit(message, sendResponse) {
   switch (message.type) {
     case "audit-start": {
       const tabId = message.tabId;
@@ -922,14 +956,18 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       });
       return true; // async
     }
+
+    default:
+      sendResponse(undefined);
   }
-});
+}
 
 // Monitor navigation on audited tabs.
 // Every navigation emits a `nav` timeline event; cross-eTLD+1 hops also emit
 // a `xdomain` event that checks for the `_gl=` Google Linker parameter.
-chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
+chrome.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
   if (!changeInfo.url) return;
+  await auditListo;
   const state = auditState.get(tabId);
   if (!state || !state.active) return;
 

@@ -2860,9 +2860,8 @@ body.panel-mode .tab-content {
   font-size: 12px;
   font-weight: 600;
   color: var(--text-secondary);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  /* Parte en los "_" (hay <wbr>) en vez de cortarse con puntos suspensivos */
+  line-height: 1.3;
 }
 
 .cm-pill {
@@ -3875,4 +3874,27 @@ body.shot-page {
   font-size: 13px;
   text-align: center;
   padding: 60px 20px;
+}
+
+/* Dónde actúa el Lab (solo en su dominio desde la 1.4.2) */
+.lab-scope {
+  margin: 12px 2px 0;
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+.lab-scope-warn { color: var(--accent); font-weight: 600; }
+
+/* Nombre de la herramienta junto a "← Inicio" */
+.tool-back-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tool-back-title {
+  padding-left: 8px;
+  border-left: 1px solid var(--border);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
 }

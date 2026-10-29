@@ -80,3 +80,18 @@ Corrección sobre la 1.4.0: el copiado al portapapeles de la captura anotada.
 **Texto para "Qué hay de nuevo"**:
 > Corrige el copiado de la captura: el clic derecho ya ofrece "Copiar imagen con anotaciones",
 > y lo copiado incluye las flechas, textos y difuminados. También con el botón Copiar y Ctrl/⌘+C.
+
+---
+
+## Actualización v1.4.2 (octubre 2026)
+
+Versión de correcciones, sin permisos nuevos.
+
+- El Lab limita sus reglas de bloqueo con `initiatorDomains` (parte de `declarativeNetRequest`,
+  ya concedido): solo bloquea las peticiones que lanza la web donde el usuario guardó el Lab.
+- No cambia nada de lo que se lee ni de lo que se guarda: todo sigue en el navegador.
+
+**Texto para "Qué hay de nuevo"**:
+> Corrige varios fallos: Consent Mode ya lee el snippet estándar de gtag (wait_for_update, region,
+> url_passthrough y ads_data_redaction), el Tag Scanner deja de detectar IDs falsos y el Cookie Audit
+> no pierde los saltos entre dominios. El Lab ahora solo actúa en la web donde lo guardas.
