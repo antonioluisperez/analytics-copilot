@@ -79,12 +79,20 @@ Apúntalas TODAS en IDEAS.md con su puntuación.
 
 ## 🟢 Paso 5. El parte de Telegram
 
-Al terminar, manda UN mensaje corto (máx. 1.500 caracteres) que empiece por
-"🔧 <b>Revisor de Analytics Copilot · {fecha}</b>" con: qué hiciste (PR con enlace, o por
-qué no hubo), las 3 mejores candidatas que quedan con su puntuación, los cambios que te
-has hecho a ti mismo esta semana (🟢) y tus propuestas (🟠, cada una como
-"💡 Propuesta N: … Responde «sí N» si la quieres"). Cierra con "Puedes responder a este
-mensaje: me llega el lunes que viene."
+Un solo mensaje, al grano, máx. 800 caracteres, con esta plantilla exacta (quita las
+líneas que no apliquen; nada de explicaciones ni saludos):
+
+```
+🔧 <b>REVISOR · Analytics Copilot</b> · {dd mmm}
+━━━━━━━━━━
+✅ {PR vX.Y.Z: qué cambia, en una línea} {enlace}
+   (o) ⏸ Sin PR: {motivo en una línea}
+📋 Siguientes: {idea} ({puntos}) · {idea} ({puntos})
+🧠 Me he ajustado: {qué, en una línea}
+💡 Propuesta N: {qué y para qué, en una línea} → «sí N»
+━━━━━━━━━━
+↩️ Responde a ESTE mensaje para hablar con el revisor
+```
 
 ## 🟢 Cómo mejorarte
 

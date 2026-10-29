@@ -25,6 +25,6 @@ Cada agente tiene dos capas:
 | 🟠 Con permiso | Las secciones marcadas 🟠 (umbral, voz de marca, qué se envía o publica) y todo lo que toque a otro agente | Lo proponen por Telegram con "💡 Propuesta" y lo aplican cuando Antonio responde "sí" |
 | 🔴 Nunca | Publicar sin Antonio, la rama main, claves, conectores, su constitución, el documento del agente de noticias | Prohibido |
 
-Antonio responde en Telegram. El agente de noticias pasa esas respuestas a la
+Antonio habla con cada agente respondiendo (Responder / citar) al mensaje concreto de ese agente en Telegram: 📊 noticias, 🔧 revisor, ✍️ posts. Un mensaje suelto, sin citar, cuenta como feedback de noticias. El agente de noticias pasa esas respuestas a la
 sección "Feedback para otros agentes" de su documento, y los agentes la leen en su
 siguiente ejecución.

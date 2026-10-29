@@ -51,13 +51,32 @@ choca con tu constitución, manda la constitución.
 
 ## 🟢 Paso 3. El mensaje de Telegram
 
-- Primer mensaje: "✍️ <b>Ideas de post · Analytics Copilot vX.Y.Z</b>", una línea de qué
-  cambió y de dónde salió, los 3 ganchos numerados y el borrador dentro de <pre></pre>.
-- Segundo, si no cabe todo en 4.000 caracteres: primer comentario, imagen y día.
-- Cierra con: "Antes de publicar, comprueba que la vX.Y.Z ya está en la Chrome Web Store
-  (Google la revisa en 1-3 días). Puedes responder a este mensaje con lo que cambiarías:
-  me llega la próxima vez." Si te has hecho cambios esta semana o tienes propuestas,
-  añádelas al final ("🧠 Me he ajustado: …" y "💡 Propuesta N: … Responde «sí N»").
+Al grano, con esta plantilla exacta. Lo único largo es el borrador, porque es lo que
+copia. Nada de explicaciones ni saludos.
+
+```
+✍️ <b>POSTS · Analytics Copilot vX.Y.Z</b> · {dd mmm}
+━━━━━━━━━━
+Qué contar: {la mejora y de dónde salió, en una línea}
+
+Ganchos:
+1. {gancho}
+2. {gancho}
+3. {gancho}
+
+<pre>{borrador completo con el mejor gancho}</pre>
+
+💬 1.er comentario: {texto con los enlaces}
+🖼 Imagen: {cuál} · 📅 {martes o jueves} 8:15
+⚠️ Publica solo cuando la vX.Y.Z esté en la Chrome Web Store
+🧠 Me he ajustado: {qué, en una línea}
+💡 Propuesta N: {qué y para qué} → «sí N»
+━━━━━━━━━━
+↩️ Responde a ESTE mensaje para hablar con el agente de posts
+```
+
+Quita las líneas 🧠 y 💡 si no aplican. Si pasa de 4.000 caracteres, el borrador va solo
+en un segundo mensaje con la misma cabecera.
 
 ## 🟢 Cómo mejorarte
 
