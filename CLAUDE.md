@@ -66,7 +66,7 @@ Si faltan los secretos `CWS_*` del repo, la release se crea igual y la subida a 
 
 ## Revisor semanal
 
-Un agente en la nube (https://claude.ai/code/routines/trig_01Sd2hc9YnEDDfhey3Sa4hJj) revisa el repo los lunes y abre como mucho una PR en una rama `revision/`. Aprende de lo que Antonio fusiona, cierra o comenta y lo apunta en `APRENDIZAJES.md`, en la rama `revisor-memoria`.
+Un agente en la nube (https://claude.ai/code/routines/trig_01Sd2hc9YnEDDfhey3Sa4hJj) revisa el repo los lunes y abre como mucho una PR en una rama `revision/`. Aprende de lo que Antonio fusiona, cierra o comenta. Su manual (`MANUAL-REVISOR.md`), sus lecciones, su lista de ideas puntuadas y el registro de cambios que se hace a sí mismo están en la rama `revisor-memoria` (ver su README). Lo pequeño se lo cambia solo; lo importante lo propone por Telegram.
 
 ## Convenciones
 
