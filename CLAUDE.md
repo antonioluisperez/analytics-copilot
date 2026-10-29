@@ -67,5 +67,5 @@ Antonio sube el ZIP a la Store a mano; eso no lo hace Claude.
 - Todo en **español**: UI, documentación y mensajes de commit
 - **Sin rastro de empresas ni de Claude** en código, docs o commits — el repo es personal y público
 - Los commits van a nombre de `antonioluisperez`
-- **No empujar a GitHub sin que Antonio lo pida.** Trabajar en local y avisar de que está listo
+- **No empujar a main sin que Antonio lo pida.** En local se trabaja y se avisa; el revisor semanal solo empuja a su rama `revisor/` y a `revisor-memoria`
 - No inventar ni generar capturas de la extensión: si falta una vista, pedírsela

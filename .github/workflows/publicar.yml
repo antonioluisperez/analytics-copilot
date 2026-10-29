@@ -1,0 +1,90 @@
+# Publica una versión nueva cuando llega a main un manifest.json con otra versión
+# (en la práctica: cuando Antonio aprueba la PR que la sube). Es la única
+# aprobación: no hay más pasos manuales.
+#
+#   1. Vuelve a pasar la prueba en Chrome. Si falla, no se publica nada.
+#   2. Crea el tag vX.Y.Z y la release de GitHub con el ZIP completo.
+#   3. Sube el ZIP de la Store y lo envía a revisión de Google (1-3 días).
+#
+# El paso 3 necesita cinco secretos del repo (Settings → Secrets → Actions):
+# CWS_EXTENSION_ID, CWS_PUBLISHER_ID, CWS_CLIENT_ID, CWS_CLIENT_SECRET y
+# CWS_REFRESH_TOKEN.
+# Sin ellos se salta y la release queda hecha igualmente.
+name: Publicar versión
+
+on:
+  push:
+    branches: [main]
+    paths: [manifest.json]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publicar
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: ¿Versión nueva?
+        id: version
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          v=$(node -p "require('./manifest.json').version")
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+          if gh release view "v$v" > /dev/null 2>&1; then
+            echo "La release v$v ya existe: nada que publicar."
+            echo "nueva=no" >> "$GITHUB_OUTPUT"
+          else
+            echo "nueva=si" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Prueba en Chrome
+        if: steps.version.outputs.nueva == 'si'
+        run: node tests/qa.js
+
+      - name: ZIPs
+        if: steps.version.outputs.nueva == 'si'
+        run: |
+          v=${{ steps.version.outputs.version }}
+          mkdir -p dist
+          zip -qr "dist/analytics-copilot-v$v-store.zip" manifest.json background.js ui content icons
+          zip -qr "dist/analytics-copilot-v$v.zip" manifest.json background.js ui content icons README.md ARQUITECTURA.md PRIVACY.md LICENSE
+
+      - name: Release de GitHub
+        if: steps.version.outputs.nueva == 'si'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          v=${{ steps.version.outputs.version }}
+          notas="docs/release-notes/v$v.md"
+          [ -f "$notas" ] || notas=/dev/null
+          gh release create "v$v" "dist/analytics-copilot-v$v.zip" --title "v$v" --notes-file "$notas" --target "$GITHUB_SHA"
+
+      # Sin comando, la herramienta sube y además envía a revisión (publica)
+      - name: Subir a la Chrome Web Store
+        if: steps.version.outputs.nueva == 'si'
+        env:
+          EXTENSION_ID: ${{ secrets.CWS_EXTENSION_ID }}
+          PUBLISHER_ID: ${{ secrets.CWS_PUBLISHER_ID }}
+          CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
+        run: |
+          if [ -z "$REFRESH_TOKEN" ] || [ -z "$PUBLISHER_ID" ]; then
+            echo "::warning::Faltan los secretos de la Chrome Web Store: la release está hecha, pero la subida a la Store queda para hacerla a mano."
+            exit 0
+          fi
+          npx --yes chrome-webstore-upload-cli@4.0.2 \
+            --source "dist/analytics-copilot-v${{ steps.version.outputs.version }}-store.zip" \
+            --extension-id "$EXTENSION_ID"
