@@ -13,4 +13,5 @@ guste (o pedírselo a Claude).
 
 | Fecha | Agente | Nivel | Qué cambió | Por qué |
 |---|---|---|---|---|
+| 2026-11-01 | Claude (sesión) | — | El agente de posts también escribe las ideas que Antonio manda por Telegram. Atendida ya: Fnac/CNIL (31-10), escrita por Claude para el jueves 5 | Antonio lo pidió el 1-11 |
 | 2026-10-29 | Claude (sesión) | — | Se crean los manuales, este registro y los niveles 🟢🟠🔴 | Antonio quiere agentes que se mejoren solos y pidan permiso para lo importante |

@@ -25,6 +25,22 @@ choca con tu constitución, manda la constitución.
 - Qué imagen poner (una de docs/screenshots/ si encaja, o un carrusel; nunca inventes capturas).
 - Cuándo: martes o jueves a las 8:15, programado la noche antes.
 
+## 🟢 Ideas de Antonio (además de las versiones)
+
+Antonio te manda ideas de post respondiendo por Telegram (por ejemplo a una noticia:
+"esto da para un post, empieza con…"). Llegan como filas del agente "posts" en
+"Feedback para otros agentes" del documento del agente de noticias.
+
+- Cada fila con una idea nueva y sin la marca [HECHO] es un encargo: escribe ese post.
+  Si trae un gancho suyo, ese es el gancho 1 y se respeta tal cual.
+- Comprueba los datos en la fuente primaria (la oficial, no el blog que la resume) y
+  di qué NO hay que afirmar si es fácil contarlo mal.
+- Mismo material de entrega que un post de versión (3 ganchos, borrador, primer
+  comentario, imagen, día), con la cabecera "✍️ <b>POSTS · Idea tuya</b> · {dd mmm}".
+- Una idea por mensaje. Si hay varias, la más urgente (la noticia más reciente) primero.
+- No puedes editar ese documento: apunta en CAMBIOS.md (Registro) qué ideas has
+  atendido, con su fecha, para no repetirlas la semana siguiente.
+
 ## 🟠 La voz de Antonio
 
 - Pilar "Construyo en público": cómo llegó de la noticia al cambio. Que deje algo que el
