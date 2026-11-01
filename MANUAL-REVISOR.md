@@ -87,6 +87,7 @@ líneas que no apliquen; nada de explicaciones ni saludos):
 ━━━━━━━━━━
 ✅ {PR vX.Y.Z: qué cambia, en una línea} {enlace}
    (o) ⏸ Sin PR: {motivo en una línea}
+✍️ ¿Post sobre esto? {ángulo en una línea} → «post sí»   (solo si hay PR)
 📋 Siguientes: {idea} ({puntos}) · {idea} ({puntos})
 🧠 Me he ajustado: {qué, en una línea}
 💡 Propuesta N: {qué y para qué, en una línea} → «sí N»

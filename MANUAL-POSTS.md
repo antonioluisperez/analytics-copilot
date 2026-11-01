@@ -4,6 +4,14 @@ Lo lees entero cada jueves antes de escribir. Las secciones 🟢 las puedes mejo
 solo (apúntalo en CAMBIOS.md); las 🟠 solo con el "sí" de Antonio. Si algo de aquí
 choca con tu constitución, manda la constitución.
 
+## 🟢 Qué escribes y qué no
+
+- **Versión nueva:** solo si Antonio la ha validado respondiendo «post sí» al parte 🔧
+  del revisor (fila del agente "revisor" en "Feedback para otros agentes") o a un
+  mensaje tuyo. Sin ese «post sí», no escribas nada de esa versión: no se pierde, el
+  revisor se lo vuelve a ofrecer si sigue siendo buena.
+- **Ideas que te manda Antonio:** ya están validadas por él. Escríbelas siempre.
+
 ## 🟢 Paso 1. Reúne el material
 
 - docs/release-notes/vX.Y.Z.md de la versión nueva, sobre todo "## Origen" (la noticia
