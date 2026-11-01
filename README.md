@@ -6,7 +6,7 @@ agentes que trabajan sobre ella. Nada de aquí llega a los usuarios.
 | Archivo | De quién | Qué es |
 |---|---|---|
 | `MANUAL-REVISOR.md` | Revisor semanal (lunes) | Cómo trabaja: fuentes, criterio, PR |
-| `MANUAL-POSTS.md` | Agente de ideas de post (jueves) | Cómo escribe: material, formato, voz |
+| `MANUAL-POSTS.md` | Agente de posts (jueves y viernes) | Cómo escribe: material, formato, voz |
 | `IDEAS.md` | Revisor | Lista viva de mejoras de la extensión, puntuadas |
 | `APRENDIZAJES.md` | Revisor | Lecciones de lo que Antonio aprueba, cierra o comenta |
 | `CAMBIOS.md` | Los dos | Registro de cambios que cada agente se ha hecho a sí mismo, y propuestas pendientes |

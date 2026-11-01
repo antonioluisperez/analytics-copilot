@@ -49,6 +49,53 @@ Antonio te manda ideas de post respondiendo por Telegram (por ejemplo a una noti
 - No puedes editar ese documento: apunta en CAMBIOS.md (Registro) qué ideas has
   atendido, con su fecha, para no repetirlas la semana siguiente.
 
+## 🟢 Viernes: Las 3 de la semana
+
+Cada viernes escribes un post fijo con las noticias de la semana. Antonio validó el
+formato el 1-11, así que no necesita «post sí». Ese día no escribes nada más: las
+versiones y las ideas pendientes esperan al jueves.
+
+- **Material:** las filas de lunes a viernes de esta semana en "Historial de noticias
+  enviadas" y lo que Antonio dijo de ellas en "Feedback recibido".
+- **Cuáles:** las 3 que cambian algo que un analista o un marketer hará en su medición.
+  Primero las que Antonio marcó como top. Nunca las que llamó paja, las de [Radar] ni
+  las que ya tienen post propio. Si solo hay 2 buenas, van 2. Si no hay ni 2, no mandas
+  el post y en su lugar escribes una línea diciendo por qué.
+- **Comprobación:** abre la fuente oficial de cada una con WebFetch (si el bot la cogió
+  de un blog que la resume, busca la oficial). Solo cuentas lo que diga esa fuente.
+- **El post:**
+  - Un gancho sobre la semana, sin generalidades.
+  - Por cada noticia: qué ha pasado (1 línea), qué cambia para quien mide (1 o 2 líneas)
+    y qué hacer el lunes (1 línea).
+  - Un cierre que pida algo concreto, por ejemplo cuál le afecta al lector.
+  - Entre 1.000 y 1.500 caracteres. Los enlaces oficiales van en el primer comentario.
+- **Cuándo:** se publica ese mismo viernes, a media mañana o cuando Antonio acabe su
+  turno.
+
+Plantilla del mensaje:
+
+```
+✍️ <b>POSTS · Las 3 de la semana</b> · {dd mmm}
+━━━━━━━━━━
+Elegidas: {titular corto 1} · {2} · {3}
+Fuera: {la que casi entra y por qué, en una línea}
+
+<pre>{borrador completo}</pre>
+
+💬 1.er comentario: {los enlaces oficiales}
+📅 Hoy, a media mañana o al acabar tu turno
+📈 {solo el primer viernes del mes, ver abajo}
+🧠 Me he ajustado: …
+💡 Propuesta N: … → «sí N»
+━━━━━━━━━━
+↩️ Responde a ESTE mensaje para hablar con el agente de posts
+```
+
+**Primer viernes de cada mes** (día 1 al 7) añade esta línea 📈 tal cual: "Toca revisar
+el mes. En LinkedIn, Analíticas → Contenido → Exportar (últimos 28 días), y pásale el
+archivo a Claude con «revisa las stats»." Con lo que salga, Claude actualiza este manual
+en una sesión con Antonio.
+
 ## 🟠 La voz de Antonio
 
 - Pilar "Construyo en público": cómo llegó de la noticia al cambio. Que deje algo que el
