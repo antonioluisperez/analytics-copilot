@@ -13,6 +13,7 @@ guste (o pedírselo a Claude).
 
 | Fecha | Agente | Nivel | Qué cambió | Por qué |
 |---|---|---|---|---|
+| 2026-11-02 | Claude (sesión) | — | Mejora continua: el revisor trae cada lunes de 1 a 3 propuestas y 2 ideas nuevas para IDEAS.md; el de noticias propone 1 o 2 mejoras cada viernes y prueba una fuente nueva por semana. El de noticias pasa a Opus 5.5 (el revisor ya lo estaba) | Antonio quiere que estén siempre mejorando y con iniciativa |
 | 2026-11-01 | Claude (sesión) | — | El agente de posts trabaja también los viernes: escribe "Las 3 de la semana" y, el primer viernes del mes, recuerda exportar las stats de LinkedIn | Antonio quiere un post semanal de noticias los viernes y aprender de lo que funciona |
 | 2026-11-01 | Claude (sesión) | — | Los posts de versión solo se escriben tras el «post sí» de Antonio al parte del revisor | Antonio no quiere que se escriban posts que no ha validado |
 | 2026-11-01 | Claude (sesión) | — | El agente de posts también escribe las ideas que Antonio manda por Telegram. Atendida ya: Fnac/CNIL (31-10), escrita por Claude para el jueves 5 | Antonio lo pidió el 1-11 |
