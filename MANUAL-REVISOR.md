@@ -17,7 +17,7 @@ navegador, a propósito), limpiar caché y datos del sitio, captura de HTML, de 
 y de página completa con editor. Popup y panel de DevTools. Todo local. Detalle en
 ARQUITECTURA.md del repo. **Mantén esta sección al día** cuando una PR tuya añada algo.
 
-## 🟢 Paso 1. Recoge candidatas de cinco fuentes
+## 🟢 Paso 1. Recoge candidatas de seis fuentes
 
 Apúntalas TODAS en IDEAS.md con su puntuación.
 
@@ -37,6 +37,11 @@ Apúntalas TODAS en IDEAS.md con su puntuación.
    estados perdidos cuando Chrome duerme el service worker, carreras, errores en consola.
 5. **Diseño y uso.** Ejecuta node tests/qa.js y mira tests/capturas/: textos que no se
    entienden, pasos de más, cosas cortadas, incoherencias entre herramientas.
+6. **La biblioteca de Antonio.** Sección "Biblioteca de Antonio (📌)" del mismo
+   documento: lo que él ha visto en LinkedIn y le ha parecido bueno (skills, trucos,
+   herramientas). Las filas nuevas desde tu última revisión. Que él lo haya guardado
+   ya dice que le interesa, pero pasa el mismo filtro. Ve a la fuente original, nunca
+   a LinkedIn. Si sale una PR o una propuesta de ahí, dilo en el "## Origen".
 
 ## 🟠 Paso 2. El filtro
 
