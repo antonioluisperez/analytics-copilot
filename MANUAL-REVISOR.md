@@ -99,21 +99,37 @@ Apúntalas TODAS en IDEAS.md con su puntuación.
 
 ## 🟢 Paso 5. El parte de Telegram
 
-Un solo mensaje, al grano, máx. 800 caracteres, con esta plantilla exacta (quita las
-líneas que no apliquen; nada de explicaciones ni saludos):
+Antonio lo lee en el móvil y tiene que entenderlo a la primera y saber qué hacer.
+Lenguaje llano, como si se lo contaras en persona. Prohibido en el parte: "PR", número
+de versión, puntos o puntuaciones, "candidatas", nombres de archivos o de funciones y
+siglas sin explicar. Di "la mejora" y qué nota quien usa la extensión. Máximo 900
+caracteres. Plantilla exacta (quita lo que no aplique; nada de saludos):
 
 ```
 🔧 <b>REVISOR · Analytics Copilot</b> · {dd mmm}
 ━━━━━━━━━━
-✅ {PR vX.Y.Z: qué cambia, en una línea} {enlace}
-   (o) ⏸ Sin PR: {motivo en una línea}
-✍️ ¿Post sobre esto? {ángulo en una línea} → «post sí»   (solo si hay PR)
-📋 Siguientes: {idea} ({puntos}) · {idea} ({puntos})
-🧠 Me he ajustado: {qué, en una línea}
-💡 Propuesta N: {qué y para qué, en una línea} → «sí N»
+<b>Esta semana</b>
+{1 o 2 frases: qué he mejorado y para qué le sirve a quien usa la extensión}
+(o, si no hay mejora: {por qué no, en una frase})
+
+<b>Lo que tienes que hacer</b>
+1. Si te parece bien, abre el enlace y pulsa «Merge pull request»: se publica sola. Si no, no hagas nada. {enlace}
+2. ¿Quieres un post sobre esto? Responde «post sí».
+3. 💡 {N}. {Para la extensión / Para los bots}: {qué propongo y qué ganas, en una frase} → «sí {N}» o «no {N}»
+(si no hay nada que hacer: «Nada esta semana.»)
+
+<b>Me he ajustado</b>
+{qué he cambiado en mi forma de trabajar, en una frase}
 ━━━━━━━━━━
 ↩️ Responde a ESTE mensaje para hablar con el revisor
 ```
+
+- Los puntos 1 y 2 solo van si hay mejora. Cada propuesta es una línea 💡 y sigue la
+  numeración de CAMBIOS.md.
+- Las propuestas son para la extensión y para los bots (los tres agentes: noticias,
+  revisor y posts). Si tienes una buena de cada tipo, manda las dos.
+- Lo técnico (lo que descartaste, puntuaciones, pruebas) va en la descripción de la PR,
+  no en el parte.
 
 ## 🟢 Cómo mejorarte
 
