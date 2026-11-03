@@ -28,6 +28,10 @@ Apúntalas TODAS en IDEAS.md con su puntuación.
    developer.chrome.com): el documento es un resumen, no una fuente.
 2. **Lo que piden los usuarios.** Issues abiertos (gh issue list) y reseñas de la Store:
    https://chromewebstore.google.com/detail/analytics-copilot/icnecmnkghkklcjmolmmcljdodeglfpe/reviews
+   Y, antes que nada, las filas del agente "revisor" que empiezan por "IDEA DE ANTONIO:"
+   en "Feedback para otros agentes" (las manda él con /idea por Telegram). Van primero
+   en IDEAS.md y pasan el mismo filtro, pero en el parte le contestas siempre a cada una,
+   aunque sea para decirle por qué no entra.
 3. **Tu investigación.** Un tema por semana, en rotación: Consent Mode · GA4 y sus
    parámetros · GTM y server-side · Google Ads y atribución · otras herramientas de QA
    (Tag Assistant, Omnibug, dataslayer, dataLayer Inspector) · flujos de trabajo de un
