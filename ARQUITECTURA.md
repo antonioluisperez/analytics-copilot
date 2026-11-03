@@ -36,6 +36,8 @@ Convenciones del proyecto y reglas que no hay que repetir: `CLAUDE.md`.
 ### 1. Inicio (Home)
 - Dashboard con estado de features activas (Lab, Time Travel)
 - Acceso rápido a todas las herramientas
+- Pie con el crédito del autor y el enlace "Proponer una mejora" (`#feedbackLink`), que abre
+  las plantillas de issue del repo (`.github/ISSUE_TEMPLATE/`: idea y fallo). No envía nada
 
 ### 2. Tag Scanner
 - Escanea la página para detectar herramientas de tracking instaladas
