@@ -14,8 +14,16 @@ gclid/wbraid/gbraid y Conversion Linker, conversiones con value y enhanced
 conversions), Lab (GTM de prueba, push al dataLayer y bloqueos, solo en su dominio),
 Eventos GA4 (generador de dataLayer.push), Time Travel (fecha simulada en todo el
 navegador, a propósito), limpiar caché y datos del sitio, captura de HTML, de consola
-y de página completa con editor. Popup y panel de DevTools. Todo local. Detalle en
+y de página completa con editor. Popup y panel de DevTools. Enlace «Proponer una mejora» en el
+pie de Inicio, a las plantillas de issue idea/fallo (v1.5.0). Todo local. Detalle en
 ARQUITECTURA.md del repo. **Mantén esta sección al día** cuando una PR tuya añada algo.
+
+## 🟢 Paso 0. Antes de nada
+
+- Comprueba que puedes empujar (git push --dry-run origin revisor-memoria). Si no, dilo en la
+  primera línea del parte: sin memoria guardada, la semana siguiente se trabaja a ciegas.
+- Toda propuesta va a "Propuestas pendientes" de CAMBIOS.md ANTES de mandar el parte, con
+  el mismo número que lleva en Telegram.
 
 ## 🟢 Paso 1. Recoge candidatas de seis fuentes
 
@@ -35,7 +43,7 @@ Apúntalas TODAS en IDEAS.md con su puntuación.
 3. **Tu investigación.** Un tema por semana, en rotación: Consent Mode · GA4 y sus
    parámetros · GTM y server-side · Google Ads y atribución · otras herramientas de QA
    (Tag Assistant, Omnibug, dataslayer, dataLayer Inspector) · flujos de trabajo de un
-   analista. Apunta en el Registro cuál tocaste para seguir la rotación. Pregunta guía:
+   analista. Apunta en el Registro cuál tocaste para seguir la rotación (03-11: Consent Mode → toca GA4 y sus parámetros). Pregunta guía:
    ¿qué comprueba a mano un analista que la extensión podría enseñarle en un clic?
 4. **Fallos en el código** que puedas reproducir: datos mal leídos, avisos falsos,
    estados perdidos cuando Chrome duerme el service worker, carreras, errores en consola.

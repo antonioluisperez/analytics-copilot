@@ -30,10 +30,13 @@ llega a los usuarios de la extensión.
 
 ## Lecciones
 
-(vacío)
+1. (03-11) La ejecución del 2-11 no dejó rastro en esta rama ni PR: no tenía permiso de escritura. Antonio respondió «sí 1 y sí 2» a unas propuestas que no estaban apuntadas aquí. Apuntar SIEMPRE las propuestas en CAMBIOS.md antes de mandar el parte, y si no se puede empujar, decirlo en el parte.
+2. (03-11) Antonio dijo «Date los permisos»: quiere que el revisor pueda trabajar solo; hoy ya se puede empujar a revision/ y a revisor-memoria.
+3. (03-11) Cuando dos ideas suyas son la misma pieza (enlace + plantillas), van juntas en una PR: una sin la otra no sirve.
 
 ## Registro
 
 | Fecha | Qué hice | Resultado |
 |---|---|---|
+| 2026-11-03 | PR #1 v1.5.0: enlace «Proponer una mejora» + plantillas de issue | Abierta |
 | 2026-10-29 | v1.4.2 preparada a mano en local: 6 fallos, Lab por dominio, tests/qa.js | Fusionada |

@@ -7,12 +7,15 @@ guste (o pedírselo a Claude).
 
 | N | Fecha | Agente | Propuesta | Estado |
 |---|---|---|---|---|
-| — | — | — | Ninguna todavía | — |
+| 1 | 2026-11-02 | Revisor | Reconectar GitHub con escritura (contents y PR) para analytics-copilot | ✅ Aprobada 03-11 («sí 1, date los permisos»). Comprobado el 03-11: ya se puede empujar |
+| 2 | 2026-11-02 | Revisor → noticias | Marca [Ext] en las noticias que cambian algo visible en una web | ✅ Aprobada 03-11, aplicada por el agente de noticias |
+| 3 | 2026-11-03 | Revisor | Crear las etiquetas `idea` y `fallo` en el repo y que el revisor lea cada lunes los issues nuevos con esas etiquetas como fuente prioritaria | Pendiente |
 
 ## Registro
 
 | Fecha | Agente | Nivel | Qué cambió | Por qué |
 |---|---|---|---|---|
+| 2026-11-03 | Revisor | 🟢 | PR #1 (v1.5.0, enlace «Proponer una mejora» + plantillas). Investigación: Consent Mode. Retrospectiva de noviembre: la cadena funcionó salvo la memoria perdida del 2-11 (arreglada con los permisos); sin propuestas de cadena con datos suficientes, con un solo mes de historia. Apuntadas a posteriori las propuestas 1 y 2 del 2-11 (aprobadas). Manual: paso 0 de comprobar escritura y apuntar propuestas antes del parte; rotación con registro de tema | La ejecución del 2-11 no pudo guardar nada y sus propuestas no estaban en este registro |
 | 2026-11-04 | Claude (sesión) | — | Comandos de Telegram: /linkedin, /post, /idea y /ayuda. El revisor pone primero las ideas que llegan con /idea («IDEA DE ANTONIO:») y le contesta a cada una en el parte | Antonio se olvidaba de cómo mandar cada cosa |
 | 2026-11-02 | Claude (sesión) | — | Buzón 📌: el bot de noticias guarda lo que Antonio le manda con 📌 en "Biblioteca de Antonio", y el revisor la usa como sexta fuente | Antonio ve mucho material formativo en LinkedIn y no se puede leer LinkedIn de forma automática |
 | 2026-11-02 | Claude (sesión) | — | Mejora continua: el revisor trae cada lunes de 1 a 3 propuestas y 2 ideas nuevas para IDEAS.md; el de noticias propone 1 o 2 mejoras cada viernes y prueba una fuente nueva por semana. El de noticias pasa a Opus 5.5 (el revisor ya lo estaba) | Antonio quiere que estén siempre mejorando y con iniciativa |
