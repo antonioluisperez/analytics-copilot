@@ -139,6 +139,8 @@ caracteres. Plantilla exacta (quita lo que no aplique; nada de saludos):
 ↩️ Responde a ESTE mensaje para hablar con el revisor
 ```
 
+- Posts en pausa desde el 4-11 (Antonio acaba de entrar en Product Hackers y no va a
+  publicar en LinkedIn por ahora): quita el punto 2 hasta que esto cambie.
 - Los puntos 1 y 2 solo van si hay mejora. Cada propuesta es una línea 💡 y sigue la
   numeración de CAMBIOS.md.
 - Las propuestas son para la extensión y para los bots (los tres agentes: noticias,
