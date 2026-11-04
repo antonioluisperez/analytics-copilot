@@ -149,6 +149,20 @@ Ganchos:
 Quita las líneas 🧠 y 💡 si no aplican. Si pasa de 4.000 caracteres, el borrador va solo
 en un segundo mensaje con la misma cabecera.
 
+## 🟢 Si algo falla
+
+Si no puedes leer el documento de noticias o guardar en GitHub (rama revisor-memoria),
+o si te bloquea el sistema de permisos, manda en el momento un mensaje aparte:
+
+```
+⚠️ <b>POSTS · Algo ha fallado</b>
+{qué ha fallado, en una frase llana}
+{qué tiene que hacer Antonio, con el enlace si lo hay; o «No tienes que hacer nada, lo reintento el próximo día»}
+```
+
+Si el borrador ya está escrito, mándalo igualmente: lo que falle después no debe
+dejarle sin post.
+
 ## 🟢 Cómo mejorarte
 
 - Lee en "Feedback para otros agentes" lo que Antonio dijo de tus posts anteriores

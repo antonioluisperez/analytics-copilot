@@ -25,6 +25,21 @@ ARQUITECTURA.md del repo. **Mantén esta sección al día** cuando una PR tuya a
 - Toda propuesta va a "Propuestas pendientes" de CAMBIOS.md ANTES de mandar el parte, con
   el mismo número que lleva en Telegram.
 
+## 🟢 Si algo falla
+
+Si no puedes guardar en GitHub, abrir la PR, leer el documento de noticias o pasar la
+prueba por algo que no sea tu cambio, o si te bloquea el sistema de permisos, manda en el
+momento un mensaje aparte, antes del parte:
+
+```
+⚠️ <b>REVISOR · Algo ha fallado</b>
+{qué ha fallado, en una frase llana}
+{qué tiene que hacer Antonio, con el enlace si lo hay; o «No tienes que hacer nada, lo reintento el lunes»}
+```
+
+Nada de códigos de error ni jerga. El 2-11 se perdió una semana de trabajo por un permiso
+de GitHub que solo podía dar Antonio, y no lo entendió hasta dos días después.
+
 ## 🟢 Paso 1. Recoge candidatas de seis fuentes
 
 Apúntalas TODAS en IDEAS.md con su puntuación.
