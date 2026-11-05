@@ -1,7 +1,12 @@
 # La casa de los agentes de Analytics Copilot
 
-Esta rama no lleva código de la extensión. Es la memoria y el manual de los dos
-agentes que trabajan sobre ella. Nada de aquí llega a los usuarios.
+Esta rama no lleva código de la extensión. Es la memoria y el manual de los agentes
+que trabajan para Antonio. Nada de aquí llega a los usuarios.
+
+Desde el 5-11 hay un equipo: un jefe (la rutina de noticias, 8:00 y 18:00) con seis
+trabajadores en paralelo, el revisor de los lunes y el agente de posts (en pausa). Solo el
+jefe habla con Antonio; los demás le dejan su parte. Las fichas de los trabajadores están
+en el documento privado "Plantilla del equipo de noticias" (Claude Docs), no aquí.
 
 | Archivo | De quién | Qué es |
 |---|---|---|
@@ -9,7 +14,9 @@ agentes que trabajan sobre ella. Nada de aquí llega a los usuarios.
 | `MANUAL-POSTS.md` | Agente de posts (jueves y viernes) | Cómo escribe: material, formato, voz |
 | `IDEAS.md` | Revisor | Lista viva de mejoras de la extensión, puntuadas |
 | `APRENDIZAJES.md` | Revisor | Lecciones de lo que Antonio aprueba, cierra o comenta |
-| `CAMBIOS.md` | Los dos | Registro de cambios que cada agente se ha hecho a sí mismo, y propuestas pendientes |
+| `PARTE.md` | Revisor | Su parte del lunes, que el jefe le pasa a Antonio |
+| `equipo/collector.mjs` | Jefe | Recolector de noticias, con un área por fuente para repartir entre trabajadores |
+| `CAMBIOS.md` | Todos | Registro de cambios que cada agente se ha hecho a sí mismo, y propuestas pendientes |
 
 ## Cómo se mejoran solos
 
