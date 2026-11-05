@@ -112,7 +112,12 @@ Apúntalas TODAS en IDEAS.md con su puntuación.
   Claude Code" (pasó en la PR #1), quítalo con gh pr edit antes de mandar el parte, y
   comprueba que la descripción no dice "Claude" en ningún sitio.
 
-## 🟢 Paso 5. El parte de Telegram
+## 🟢 Paso 5. El parte (PARTE.md)
+
+Desde el 5-11 el parte no va por Telegram: lo escribes en PARTE.md (primera línea, la fecha
+de hoy) y el jefe del equipo de noticias se lo pasa a Antonio el lunes a las 18:00, junto con
+sus noticias. Él lo resume, así que escribe claro y completo. Tus propuestas le llegan como
+R1, R2… y Antonio contesta «sí R3»; tú lo verás como «sí 3» en Feedback para otros agentes.
 
 Antonio lo lee en el móvil y tiene que entenderlo a la primera y saber qué hacer.
 Lenguaje llano, como si se lo contaras en persona. Prohibido en el parte: "PR", número
@@ -136,7 +141,6 @@ caracteres. Plantilla exacta (quita lo que no aplique; nada de saludos):
 <b>Me he ajustado</b>
 {qué he cambiado en mi forma de trabajar, en una frase}
 ━━━━━━━━━━
-↩️ Responde a ESTE mensaje para hablar con el revisor
 ```
 
 - Posts en pausa desde el 4-11 (Antonio acaba de entrar en Product Hackers y no va a
