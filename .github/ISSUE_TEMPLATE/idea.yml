@@ -1,0 +1,26 @@
+name: Proponer una mejora
+description: Algo que comprobarías más rápido o mejor si la extensión te lo enseñara
+title: "Idea: "
+labels: ["idea"]
+body:
+  - type: textarea
+    id: que
+    attributes:
+      label: ¿Qué te gustaría que hiciera?
+      description: En una o dos frases.
+    validations:
+      required: true
+  - type: textarea
+    id: hoy
+    attributes:
+      label: ¿Cómo lo compruebas hoy?
+      description: "Pasos que haces a mano: consola, DevTools, Tag Assistant, otra extensión…"
+  - type: input
+    id: herramienta
+    attributes:
+      label: Herramienta de la extensión
+      description: "Tag Scanner, Consent Mode, Cookie Audit, Lab, Eventos GA4, Time Travel, Captura… o «nueva»"
+  - type: input
+    id: web
+    attributes:
+      label: Una web pública donde se vea (opcional)

@@ -160,6 +160,18 @@ const CASOS = [
         if (!gtmAqui) return 'no inyecta el GTM en su dominio';
         return gtmFuera ? 'inyecta el GTM en otra web' : null;
     }],
+    ['Inicio enlaza a "Proponer una mejora" con plantillas de issue en el repo', async () => {
+        const url = 'https://github.com/antonioluisperez/analytics-copilot/issues/new/choose';
+        const enlaces = ['popup.html', 'panel.html'].map((f) => {
+            const a = fs.readFileSync(path.join(RAIZ, 'ui', f), 'utf8').match(/<a id="feedbackLink"[^>]*>/);
+            return a && a[0].includes(`href="${url}"`) && a[0].includes('target="_blank"');
+        });
+        if (!enlaces[0] || !enlaces[1]) return 'falta el enlace en ' + ['popup.html', 'panel.html'].filter((f, i) => !enlaces[i]).join(' y ');
+        const visible = await ev("navigateHome(); (() => { const a = document.getElementById('feedbackLink'); return !!a && a.offsetWidth > 0 && a.textContent.trim(); })()");
+        if (!visible) return 'el enlace no se ve en Inicio';
+        const faltan = ['idea.yml', 'fallo.yml'].filter((f) => !fs.existsSync(path.join(RAIZ, '.github', 'ISSUE_TEMPLATE', f)));
+        return faltan.length ? 'faltan plantillas: ' + faltan.join(', ') : null;
+    }],
     ['Cookie Audit registra el salto cross-domain aunque Chrome duerma el worker', async () => {
         await ev("navigateTo('crossdomain'); caStartAudit(); 1"); await espera(2500);
         await cdp('Target.closeTarget', { targetId: popT }); await espera(1500);

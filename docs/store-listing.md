@@ -95,3 +95,16 @@ Versión de correcciones, sin permisos nuevos.
 > Corrige varios fallos: Consent Mode ya lee el snippet estándar de gtag (wait_for_update, region,
 > url_passthrough y ads_data_redaction), el Tag Scanner deja de detectar IDs falsos y el Cookie Audit
 > no pierde los saltos entre dominios. El Lab ahora solo actúa en la web donde lo guardas.
+
+---
+
+## Actualización v1.5.0 (noviembre 2026)
+
+Enlace para proponer mejoras, sin permisos nuevos.
+
+- El enlace "Proponer una mejora" de la pantalla de Inicio es un `<a>` normal que abre GitHub
+  en una pestaña nueva. La extensión no envía ni recoge ningún dato.
+
+**Texto para "Qué hay de nuevo"**:
+> Nuevo enlace "Proponer una mejora" en Inicio: cuéntanos qué compruebas a mano y te gustaría ver
+> en un clic, o avisa de un fallo, con un formulario corto en GitHub.

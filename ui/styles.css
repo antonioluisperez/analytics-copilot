@@ -3509,6 +3509,23 @@ body.panel-mode .tab-content {
   background: var(--primary-light);
 }
 
+.home-credit-sep {
+  font-size: 10.5px;
+  color: var(--text-hint);
+}
+
+.home-credit-feedback {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.home-credit-feedback:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
 /* Chip de elección del usuario (separa "vigente" de "ya eligió") */
 .cm-choice-chip {
   font-size: 9.5px;

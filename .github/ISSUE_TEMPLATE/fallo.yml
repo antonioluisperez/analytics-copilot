@@ -1,0 +1,30 @@
+name: Avisar de un fallo
+description: Algo que la extensión lee mal, un aviso que no es cierto o algo que no funciona
+title: "Fallo: "
+labels: ["fallo"]
+body:
+  - type: textarea
+    id: que
+    attributes:
+      label: ¿Qué pasa?
+      description: Lo que ves y lo que esperabas ver.
+    validations:
+      required: true
+  - type: textarea
+    id: pasos
+    attributes:
+      label: Pasos para reproducirlo
+      placeholder: |
+        1. Abro https://…
+        2. En Consent Mode pulso…
+        3. Sale…
+  - type: input
+    id: web
+    attributes:
+      label: Web donde pasa
+      description: Si es pública. No pegues datos personales ni de clientes.
+  - type: input
+    id: version
+    attributes:
+      label: Versión de la extensión
+      description: Aparece en chrome://extensions
