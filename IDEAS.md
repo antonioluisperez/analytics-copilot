@@ -33,7 +33,7 @@ esa semana no hay PR.
 
 | Idea | Versión |
 |---|---|
-| Enlace "Proponer una mejora" en Inicio + plantillas de issue (idea / fallo) | v1.5.0 (PR #1, pendiente) |
+| Enlace "Proponer una mejora" en Inicio + plantillas de issue (idea / fallo) | v1.5.0 (PR #1, fusionada 05-11) |
 | Consent lee el snippet estándar de gtag (`arguments`) | v1.4.2 |
 | Tag Scanner sin IDs falsos; reglas de bloqueo sin duplicar | v1.4.2 |
 | Cookie Audit no pierde eventos con el service worker dormido | v1.4.2 |
