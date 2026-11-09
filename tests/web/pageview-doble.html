@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>page_view duplicado</title>
+<script>
+  // Simula GTM y gtag configurando a la vez G-DUPLI1234: dos page_view para la
+  // misma URL. G-UNICO5678 manda uno solo y no debe avisar; el hit repetido con
+  // la URL idéntica es el mismo hit, no un duplicado.
+  var dl = encodeURIComponent(location.href);
+  var hit = function (tid, s) { return '/g/collect?v=2&tid=' + tid + '&_p=1&_s=' + s + '&en=page_view&dl=' + dl; };
+  fetch(hit('G-DUPLI1234', 1));
+  fetch(hit('G-DUPLI1234', 2));
+  fetch(hit('G-UNICO5678', 1));
+  fetch(hit('G-UNICO5678', 1));
+</script>
+</head>
+<body><h1>page_view duplicado</h1></body>
+</html>
