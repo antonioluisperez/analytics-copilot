@@ -16,7 +16,7 @@ Eventos GA4 (generador de dataLayer.push), Time Travel (fecha simulada en todo e
 navegador, a propósito), limpiar caché y datos del sitio, captura de HTML, de consola
 y de página completa con editor. Popup y panel de DevTools. Enlace «Proponer una mejora» en el
 pie de Inicio, a las plantillas de issue idea/fallo (v1.5.0). Aviso de page_view de GA4
-duplicado en la tarjeta de GA4 del Tag Scanner (v1.6.0, si se fusiona). Todo local. Detalle en
+duplicado en la tarjeta de GA4 del Tag Scanner (v1.6.0). Todo local. Detalle en
 ARQUITECTURA.md del repo. **Mantén esta sección al día** cuando una PR tuya añada algo.
 
 ## 🟢 Paso 0. Antes de nada
