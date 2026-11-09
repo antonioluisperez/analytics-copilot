@@ -108,3 +108,16 @@ Enlace para proponer mejoras, sin permisos nuevos.
 **Texto para "Qué hay de nuevo"**:
 > Nuevo enlace "Proponer una mejora" en Inicio: cuéntanos qué compruebas a mano y te gustaría ver
 > en un clic, o avisa de un fallo, con un formulario corto en GitHub.
+
+---
+
+## Actualización v1.6.0 (noviembre 2026)
+
+Aviso de page_view duplicado en el Tag Scanner, sin permisos nuevos.
+
+- Lee las peticiones de GA4 que la página ya ha hecho (Performance API, en la pestaña activa y
+  con los permisos de host ya concedidos). No envía ni guarda nada.
+
+**Texto para "Qué hay de nuevo"**:
+> El Tag Scanner avisa si GA4 manda el page_view dos veces para la misma página (GTM y gtag a la
+> vez, dos configuraciones o un page_view manual sin send_page_view: false), con el ID que lo hace.

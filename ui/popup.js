@@ -1203,7 +1203,28 @@ function scanPageTags() {
     }
   } catch (e) {}
 
+  // page_view de GA4 que ya han salido en esta carga (performance entries: ven
+  // también los hits anteriores a abrir el popup). Los eventos agrupados en el
+  // cuerpo de un POST no se ven aquí; el page_view inicial va en la URL.
+  var ga4PageViews = [];
+  try {
+    performance.getEntriesByType("resource").forEach(function (e) {
+      if (e.name.indexOf("/g/collect") === -1) return;
+      try {
+        var u = new URL(e.name);
+        if (u.pathname.indexOf("/g/collect") === -1 || u.searchParams.get("en") !== "page_view") return;
+        ga4PageViews.push({
+          url: e.name,
+          tid: u.searchParams.get("tid") || "",
+          dl: u.searchParams.get("dl") || "",
+          ts: Math.round(e.startTime),
+        });
+      } catch (e1) {}
+    });
+  } catch (e) {}
+
   return {
+    ga4PageViews: ga4PageViews,
     scripts: scriptSrcs,
     iframes: iframeSrcs,
     inline: inlineScripts,
@@ -1216,6 +1237,37 @@ function scanPageTags() {
     ttqPixelIds: ttqPixelIds,
     url: location.href,
   };
+}
+
+// page_view de GA4 duplicados: el mismo ID de medición manda page_view para la
+// misma URL varias veces en pocos segundos. Suele ser GTM y gtag a la vez, dos
+// etiquetas de configuración o un page_view manual sin send_page_view: false.
+// Dos IDs distintos (dos propiedades) o la misma URL visitada otra vez más tarde
+// en una SPA no cuentan. URLs idénticas son el mismo hit, no un duplicado.
+const GA4_DUP_WINDOW_MS = 3000;
+function ga4DuplicatePageViews(hits) {
+  const grupos = new Map();
+  for (const h of hits || []) {
+    if (!h || !h.tid) continue;
+    const k = h.tid + "|" + h.dl;
+    if (!grupos.has(k)) grupos.set(k, new Map());
+    const urls = grupos.get(k);
+    if (!urls.has(h.url)) urls.set(h.url, h.ts);
+  }
+  const dups = [];
+  for (const [k, urls] of grupos) {
+    const ts = [...urls.values()].sort((a, b) => a - b);
+    let racha = 1, max = 1;
+    for (let i = 1; i < ts.length; i++) {
+      racha = ts[i] - ts[i - 1] <= GA4_DUP_WINDOW_MS ? racha + 1 : 1;
+      if (racha > max) max = racha;
+    }
+    if (max > 1) {
+      const sep = k.indexOf("|");
+      dups.push({ tid: k.slice(0, sep), dl: k.slice(sep + 1), count: max });
+    }
+  }
+  return dups;
 }
 
 async function runTagScan() {
@@ -1361,6 +1413,8 @@ async function runTagScan() {
       return;
     }
 
+    const ga4DupWarnings = ga4DuplicatePageViews(ctx.ga4PageViews);
+
     // ID badge color class
     function idColorClass(id) {
       if (/^G-|^GT-/.test(id)) return "tags-id-ga4";
@@ -1427,6 +1481,11 @@ async function runTagScan() {
           <div class="tags-item-ids">
             ${item.ids.map((id) => `<span class="tags-id ${idColorClass(id)}">${escapeHtml(id)}</span>`).join("")}
           </div>
+          ${item.name === "Google Analytics 4" ? ga4DupWarnings.map((d) => {
+            let ruta = d.dl;
+            try { const u = new URL(d.dl); ruta = u.pathname + u.search; } catch (e) {}
+            return `<div class="tags-warn" title="${escapeHtml(d.dl)}">⚠ <strong>page_view duplicado</strong>: ${escapeHtml(d.tid)} lo ha enviado ${d.count} veces seguidas para ${escapeHtml(ruta || "esta página")}. Suele ser GTM y gtag a la vez, dos etiquetas de configuración o un page_view manual sin <code>send_page_view: false</code>.</div>`;
+          }).join("") : ""}
         </div>`;
       }
 

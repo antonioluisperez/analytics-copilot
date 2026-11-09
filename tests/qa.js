@@ -172,6 +172,14 @@ const CASOS = [
         const faltan = ['idea.yml', 'fallo.yml'].filter((f) => !fs.existsSync(path.join(RAIZ, '.github', 'ISSUE_TEMPLATE', f)));
         return faltan.length ? 'faltan plantillas: ' + faltan.join(', ') : null;
     }],
+    ['Tag Scanner avisa del page_view de GA4 duplicado (y solo de ese ID)', async () => {
+        await navegar(WEB + 'pageview-doble.html');
+        await ev("navigateTo('tags'); runTagScan()"); await espera(1000); await foto('tags-pageview-doble');
+        const avisos = await ev("[...document.querySelectorAll('#tagsResults .tags-warn')].map(e => e.textContent)");
+        await navegar(WEB);
+        if (!avisos.some((a) => a.includes('G-DUPLI1234') && a.includes('2 veces'))) return 'sin aviso para G-DUPLI1234: ' + JSON.stringify(avisos);
+        return avisos.some((a) => a.includes('G-UNICO5678')) ? 'aviso falso para G-UNICO5678' : null;
+    }],
     ['Cookie Audit registra el salto cross-domain aunque Chrome duerma el worker', async () => {
         await ev("navigateTo('crossdomain'); caStartAudit(); 1"); await espera(2500);
         await cdp('Target.closeTarget', { targetId: popT }); await espera(1500);
