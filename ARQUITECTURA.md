@@ -43,6 +43,9 @@ Convenciones del proyecto y reglas que no hay que repetir: `CLAUDE.md`.
 - Escanea la página para detectar herramientas de tracking instaladas
 - Detecta: GTM, GA4, Google Ads, Meta Pixel, TikTok Pixel, Hotjar, Clarity, Segment, etc.
 - Toggle de bloqueo inline por herramienta (con banner de recarga)
+- Aviso de `page_view` de GA4 duplicado en la tarjeta de GA4 (`ga4DuplicatePageViews`): mismo ID
+  y misma `dl` en hits distintos separados ≤ 3 s, leídos de las performance entries. Dos IDs
+  distintos o la misma URL visitada otra vez más tarde (SPA) no avisan
 
 ### 3. Time Travel
 - Sobreescribe `window.Date` con una fecha/hora personalizada

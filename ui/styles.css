@@ -741,6 +741,19 @@ h1 {
   border-top: 1px solid hsla(200, 15%, 75%, 0.5);
 }
 
+/* Aviso dentro de una herramienta (p. ej. page_view de GA4 duplicado) */
+.tags-warn {
+  margin-top: 8px;
+  padding: 8px 10px;
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--text-primary);
+  background: var(--warning-bg, rgba(255, 193, 7, 0.1));
+  border: 1px solid var(--warning, #ffc107);
+  border-radius: 6px;
+}
+.tags-warn code { font-size: 11px; }
+
 /* ID badges with platform-specific colors */
 .tags-id {
   font-size: 12px;
