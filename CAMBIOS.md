@@ -9,12 +9,14 @@ guste (o pedírselo a Claude).
 |---|---|---|---|---|
 | 1 | 2026-11-02 | Revisor | Reconectar GitHub con escritura (contents y PR) para analytics-copilot | ✅ Aprobada 03-11 («sí 1, date los permisos»). Comprobado el 03-11: ya se puede empujar |
 | 2 | 2026-11-02 | Revisor → noticias | Marca [Ext] en las noticias que cambian algo visible en una web | ✅ Aprobada 03-11, aplicada por el agente de noticias |
-| 3 | 2026-11-03 | Revisor | Crear las etiquetas `idea` y `fallo` en el repo y que el revisor lea cada lunes los issues nuevos con esas etiquetas como fuente prioritaria | Pendiente |
+| 3 | 2026-11-03 | Revisor | Crear las etiquetas `idea` y `fallo` en el repo y que el revisor lea cada lunes los issues nuevos con esas etiquetas como fuente prioritaria | Pendiente (sin respuesta a 09-11; no hay issues todavía, no se vuelve a pedir hasta que llegue el primero) |
+| 4 | 2026-11-09 | Revisor | Para la extensión: botón «Copiar informe de QA» en Inicio que junte en un texto lo que ven Tag Scanner, Consent y Cookie Audit de la página (herramientas e IDs, estado del consentimiento, avisos), listo para pegar en un ticket | Pendiente |
 
 ## Registro
 
 | Fecha | Agente | Nivel | Qué cambió | Por qué |
 |---|---|---|---|---|
+| 2026-11-09 | Revisor | 🟢 | PR #2 (v1.6.0, aviso de page_view de GA4 duplicado). Investigación: GA4 y sus parámetros → la semana que viene toca GTM y server-side. Sin feedback nuevo de Antonio desde el 04-11; biblioteca vacía; sin issues. Manual: paso 4 dice cómo quitar el pie automático de la PR sin que vuelva; paso 1 baja las reseñas de la Store a comprobación rápida | El pie volvió a aparecer al editar la PR con `gh api`; la Store no deja leer el texto de las reseñas sin navegador |
 | 2026-11-03 | Revisor | 🟢 | PR #1 (v1.5.0, enlace «Proponer una mejora» + plantillas). Investigación: Consent Mode. Retrospectiva de noviembre: la cadena funcionó salvo la memoria perdida del 2-11 (arreglada con los permisos); sin propuestas de cadena con datos suficientes, con un solo mes de historia. Apuntadas a posteriori las propuestas 1 y 2 del 2-11 (aprobadas). Manual: paso 0 de comprobar escritura y apuntar propuestas antes del parte; rotación con registro de tema | La ejecución del 2-11 no pudo guardar nada y sus propuestas no estaban en este registro |
 | 2026-11-05 | Claude (sesión) | — | EQUIPO: la rutina de noticias pasa a ser un jefe (Opus, 8:00 y 18:00) que lanza seis trabajadores en paralelo (Sonnet). Solo el jefe habla con Antonio; el revisor deja su parte en PARTE.md | Antonio quiere un equipo que le quite todo el trabajo de buscar noticias, con un solo interlocutor |
 | 2026-11-04 | Claude (sesión) | — | POSTS EN PAUSA: rutina del agente de posts desactivada; el revisor deja de ofrecer «post sí»; /post solo guarda la idea | Antonio acaba de entrar en Product Hackers: ahora busca reconocimiento dentro, no fuera, y muchos posts podrían leerse como que quiere irse |
