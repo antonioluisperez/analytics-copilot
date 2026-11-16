@@ -1,13 +1,13 @@
-2026-11-09
-🔧 <b>REVISOR · Analytics Copilot</b> · 09 nov
+2026-11-16
+🔧 <b>REVISOR · Analytics Copilot</b> · 16 nov
 ━━━━━━━━━━
 <b>Esta semana</b>
-El escáner de etiquetas avisa cuando GA4 cuenta dos veces la misma página vista (GTM y gtag a la vez, o una vista manual sin desactivar la automática), y dice qué cuenta lo hace.
+He hecho tu idea del artículo de David Vallejo. El código de consentimiento que va en cada envío a Google a veces lleva mayúsculas, y la extensión las leía mal (decía «denegado → permitido» sin serlo). Ahora dice el estado real y quién lo fijó.
 
 <b>Lo que tienes que hacer</b>
-1. Si te parece bien, abre el enlace y pulsa «Merge pull request»: se publica sola. Si no, no hagas nada. https://github.com/antonioluisperez/analytics-copilot/pull/2
-2. 💡 4. Para la extensión: un botón «Copiar informe» en Inicio que junte en un texto las etiquetas, el consentimiento y los avisos de la página, listo para pegar en un ticket. Ganas QA documentado en un clic; sabremos que sirve si alguien lo menciona → «sí 4» o «no 4»
+1. Si te parece bien, abre el enlace y pulsa «Merge pull request»: se publica sola. Si no, no hagas nada. https://github.com/antonioluisperez/analytics-copilot/pull/3
+2. 💡 5. Para la extensión: que el escáner diga si las etiquetas de Google salen desde tu dominio, como Google pide ahora en Ads. Lo compruebas en un clic → «sí 5» o «no 5»
 
 <b>Me he ajustado</b>
-He aprendido a quitar de la mejora la firma automática sin que vuelva a aparecer.
+Antes de proponerte algo, miro que la extensión no lo haga ya.
 ━━━━━━━━━━

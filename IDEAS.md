@@ -21,6 +21,9 @@ esa semana no hay PR.
 
 | Idea | De dónde sale | Impacto | Encaje | Prueba | Riesgo | Total |
 |---|---|---|---|---|---|---|
+| Tag Scanner: decir si las etiquetas de Google se sirven en primera parte (Google tag gateway en una ruta propia tipo /metrics, o server-side GTM) y por qué ruta; hoy se comprueba a mano en Tag Assistant > Hits Sent. Google lo liga a Conversion Lift y Data Strength (noticias 13 y 16-11) | Investigación 16-11 (GTM y server-side) + docs oficiales (developers.google.com/tag-platform/tag-manager/gateway/setup-guide) | 2 | 3 | 3 | 2 | 10 |
+| Consent > Pings: mostrar el gcd decodificado de cada hit (al tocarlo) y avisar si un hit sale con Consent Mode inactivo (bandera de la posición 9 del gcd) o con GPC; sigue a v1.6.1 | Investigación 16-11 (Consent, librería consent-string) | 2 | 3 | 2 | 2 | 9 |
+| GTM: avisar si el mismo contenedor GTM-XXXX se carga dos veces en la página (comprobar antes si el Tag Scanner ya lo hace) | Investigación 16-11 (GTM) | 2 | 3 | 2 | 3 | 10 |
 | Consent: aviso cuando un hit de Google (GA4/Ads) sale antes del `consent default` (sin gcs o con hora anterior). Google pide el default antes de cualquier config/event. (09-11: repuntuada, depende de leer `gcd`, cuyo formato Google no documenta → riesgo de avisos falsos) | Investigación 03-11 (Consent Mode) | 3 | 3 | 2 | 1 | 9 |
 | Tag Scanner: sacar también los IDs de GA4 (`tid`) de los hits /g/collect reales; hoy no salen si gtag se sirve desde un dominio propio o un sGTM con cargador personalizado | Investigación 09-11 (GA4) | 2 | 3 | 2 | 3 | 10 |
 | GA4: avisar si los hits de producción llevan `_dbg=1` o `ep.debug_mode` (debug_mode olvidado: ensucia DebugView y lo quita el filtro de tráfico de desarrolladores) | Investigación 09-11 (GA4) | 2 | 3 | 2 | 3 | 10 |
@@ -36,6 +39,7 @@ esa semana no hay PR.
 
 | Idea | Versión |
 |---|---|
+| Consent lee el gcd por bits: mayúsculas con declare y delegación, sin estados falsos (idea de Antonio, 12-11) | v1.6.1 (PR #3, abierta 16-11) |
 | Tag Scanner avisa del `page_view` de GA4 duplicado (mismo ID y URL, ≤ 3 s) | v1.6.0 (PR #2, fusionada 09-11) |
 | Enlace "Proponer una mejora" en Inicio + plantillas de issue (idea / fallo) | v1.5.0 (PR #1, fusionada 05-11) |
 | Consent lee el snippet estándar de gtag (`arguments`) | v1.4.2 |
@@ -51,3 +55,7 @@ esa semana no hay PR.
 | Shopify network_access: las apps declaran sus orígenes (05-11) | Afecta a apps de Shopify, no a lo que ve un analista en la web (09-11) |
 | GA4 Data Manager, MCP de GA4, Looker Studio Union (semana 03-09/11) | No se ven desde el navegador (09-11) |
 | sGTM pasa la IP completa a etiquetas de Ads (11-01-2027) | Ocurre en el servidor; no se ve desde el navegador (03-11) |
+| Botón «Copiar informe de QA» en Inicio (propuesta 4) | «no 4» de Antonio (10-11). Además, Consent ya tenía «Copiar informe» |
+| page_view al volver con bfcache en GTM (9-11) | Comportamiento buscado de GTM; el aviso de duplicado (≤ 3 s, misma URL) no salta al volver atrás (16-11) |
+| Geolocalización de google_tag_data.xcd (Thyngster, 10-11) | No documentada por Google y no cambia una comprobación de QA hoy (16-11) |
+| Conversion Lift, ValueTrack de AI Max, EDPB interés legítimo (semana 10-16/11) | No se ven desde el navegador (16-11) |
