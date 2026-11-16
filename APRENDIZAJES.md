@@ -45,7 +45,7 @@ llega a los usuarios de la extensión.
 
 | Fecha | Qué hice | Resultado |
 |---|---|---|
-| 2026-11-16 | PR #3 v1.6.1: Consent lee bien los gcd con mayúsculas (declare y delegación). Idea de Antonio del 12-11 | Pendiente |
+| 2026-11-16 | PR #3 v1.6.1: Consent lee bien los gcd con mayúsculas (declare y delegación). Idea de Antonio del 12-11 | Fusionada el 16-11 (el mismo día) |
 | 2026-11-09 | PR #2 v1.6.0: aviso de page_view de GA4 duplicado en el Tag Scanner | Fusionada el 09-11 (el mismo día) |
 | 2026-11-03 | PR #1 v1.5.0: enlace «Proponer una mejora» + plantillas de issue | Fusionada el 05-11 |
 | 2026-10-29 | v1.4.2 preparada a mano en local: 6 fallos, Lab por dominio, tests/qa.js | Fusionada |
