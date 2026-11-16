@@ -113,6 +113,23 @@ const CASOS = [
         const falsos = d.reglas.filter((r) => ['wait-for-update-missing', 'url-passthrough-hint', 'ads-data-redaction-recommended'].includes(r));
         return falsos.length ? 'avisos falsos: ' + falsos.join(', ') : null;
     }],
+    ['La calculadora gcd lee las mayúsculas (declare y delegación) sin inventar estados', async () => {
+        // Ejemplos de la librería analytics-debugger/consent-string (Thyngster, nov 2026)
+        const leer = (gcd) => ev(`(() => { navigateTo('consent'); consentGcdCalcInput.value = '${gcd}';
+            consentGcdCalcInput.dispatchEvent(new Event('input'));
+            return [...consentGcdCalcOut.querySelectorAll('.cm-gcd-meaning')].map(e => e.textContent); })()`);
+        const clasico = await leer('13p3p3p3p5l1');
+        if (clasico.length !== 4 || clasico.some((t) => t !== 'Denegado (default, sin update)')) return '13p3p3p3p5l1 cambia: ' + JSON.stringify(clasico);
+        const declare = await leer('13l3l3R2l5l1');
+        if (declare.length !== 4) return '13l3l3R2l5l1 no se decodifica';
+        if (/Denegado/.test(declare[2]) || !/eclarado: permitido/.test(declare[2])) return 'ad_user_data con R: ' + declare[2];
+        const conUpdate = await leer('13q3q3W2q5l1');
+        if (!/Denegado → Denegado/.test(conUpdate[2]) || !/declarado: permitido/.test(conUpdate[2])) return 'ad_user_data con W: ' + conUpdate[2];
+        const delegado = await leer('13p3lPR2l5l1');
+        if (delegado.length !== 4) return '13p3lPR2l5l1 sale como formato no reconocido';
+        await foto('consent-gcd');
+        return /ad_storage/.test(delegado[2]) && /denegado/i.test(delegado[2]) ? null : 'ad_user_data delegado: ' + delegado[2];
+    }],
     ['Tag Scanner no saca IDs de textos como IMG-12345 o DRAW-99999', async () => {
         await ev("navigateTo('tags'); 1"); await espera(2500); await foto('tags');
         const ids = await ev("[...document.querySelectorAll('#tagsResults .tags-id')].map(e => e.textContent)");
