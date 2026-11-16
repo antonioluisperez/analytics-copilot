@@ -39,7 +39,7 @@ esa semana no hay PR.
 
 | Idea | Versión |
 |---|---|
-| Consent lee el gcd por bits: mayúsculas con declare y delegación, sin estados falsos (idea de Antonio, 12-11) | v1.6.1 (PR #3, abierta 16-11) |
+| Consent lee el gcd por bits: mayúsculas con declare y delegación, sin estados falsos (idea de Antonio, 12-11) | v1.6.1 (PR #3, fusionada 16-11) |
 | Tag Scanner avisa del `page_view` de GA4 duplicado (mismo ID y URL, ≤ 3 s) | v1.6.0 (PR #2, fusionada 09-11) |
 | Enlace "Proponer una mejora" en Inicio + plantillas de issue (idea / fallo) | v1.5.0 (PR #1, fusionada 05-11) |
 | Consent lee el snippet estándar de gtag (`arguments`) | v1.4.2 |
