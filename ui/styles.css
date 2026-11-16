@@ -1596,9 +1596,8 @@ h1 {
 .cm-gcd-meaning {
   font-size: 10px;
   font-weight: 600;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .cm-gcd-granted { color: var(--success); }
