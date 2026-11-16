@@ -3433,26 +3433,73 @@ let consentInterceptorInjected = false;
 let lastConsentData = null;
 let lastConsentHost = "";
 
-// Decode GCD string: format is 1[3x][3x][3x][3x]5
-// Formato real: 1<d><L><d><L><d><L><d><L>… (p.ej. 13p3p3p3p5l1). Los dígitos son
-// opacos y Google avisa de que los campos pueden cambiar: extraemos solo las 4 letras.
+// Decodificar un gcd. Formato (no documentado por Google; descrito por Thyngster y la
+// librería analytics-debugger/consent-string): "1" + un par de caracteres por señal
+// (ad_storage, analytics_storage, ad_user_data, ad_personalization) + banderas…
+// Cada carácter es un número de 0 a 63 en GCD_ALPHABET:
+//   1.º del par = (delegación << 2) | implícito
+//   2.º del par = (declare << 4) | (default << 2) | update
+// Cada valor ocupa 2 bits: 1 sin fijar, 2 denegado, 3 permitido. Las minúsculas
+// habituales (p, q, r, t, u, v, m, n, l) son los casos sin declare: GCD_CHARS.
+// Las mayúsculas llevan declare o delegación: no se pueden pasar a minúscula.
+const GCD_ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_";
+const GCD_TYPES = ["ad_storage", "analytics_storage", "ad_user_data", "ad_personalization"];
+const GCD_RE = /^1[0-9A-Za-z_-]{8}/;
+
+function gcdState(bits) { return bits === 2 ? "denied" : bits === 3 ? "granted" : null; }
+function gcdWord(state) { return state === "granted" ? "permitido" : "denegado"; }
+
 function decodeGCDString(gcd) {
-  if (!gcd) return null;
-  var m = String(gcd).match(/^1\d([a-z])\d([a-z])\d([a-z])\d([a-z])/i);
-  if (!m) return null;
-  var gcdTypes = ["ad_storage", "analytics_storage", "ad_user_data", "ad_personalization"];
-  var decoded = {};
-  for (var i = 0; i < gcdTypes.length; i++) {
-    var ch = m[i + 1].toLowerCase();
-    decoded[gcdTypes[i]] = { char: ch, info: GCD_CHARS[ch] || { label: "Desconocido (" + ch + ")", cls: "muted" } };
+  var s = String(gcd || "");
+  if (!GCD_RE.test(s)) return null;
+  var raw = {};
+  GCD_TYPES.forEach(function (type, i) {
+    var a = GCD_ALPHABET.indexOf(s[1 + 2 * i]), b = GCD_ALPHABET.indexOf(s[2 + 2 * i]);
+    var del = a >> 2;
+    raw[type] = {
+      first: s[1 + 2 * i], ch: s[2 + 2 * i],
+      implicit: gcdState(a & 3), declare: gcdState((b >> 4) & 3),
+      defBits: (b >> 2) & 3, updBits: b & 3,
+      delegatedTo: del >= 12 ? GCD_TYPES[del - 12] : del === 8 ? "other" : null,
+    };
+  });
+  // Estado efectivo: se sigue la delegación y manda update > default > declare > implícito
+  function effective(type) {
+    var t = type, seen = [type];
+    while (raw[t].delegatedTo && raw[t].delegatedTo !== "other" && seen.indexOf(raw[t].delegatedTo) < 0) {
+      t = raw[t].delegatedTo; seen.push(t);
+    }
+    var r = raw[t];
+    return gcdState(r.updBits) || gcdState(r.defBits) || r.declare || r.implicit;
   }
+  var decoded = {};
+  GCD_TYPES.forEach(function (type) {
+    var r = raw[type];
+    var info;
+    if (r.delegatedTo) {
+      var eff = effective(type);
+      info = {
+        label: "Delegado en " + (r.delegatedTo === "other" ? "otra señal" : r.delegatedTo) + (eff ? " → " + gcdWord(eff) : ""),
+        cls: eff ? (eff === "granted" ? "granted" : "denied") : "muted",
+      };
+    } else {
+      var key = GCD_ALPHABET[16 | (r.defBits << 2) | r.updBits];
+      info = GCD_CHARS[key] || { label: "Desconocido (" + r.ch + ")", cls: "muted" };
+      if (r.declare && key === "l") {
+        info = { label: "Declarado: " + gcdWord(r.declare) + " (sin default ni update)", cls: r.declare === "granted" ? "granted" : "denied" };
+      } else if (r.declare) {
+        info = { label: info.label + " · declarado: " + gcdWord(r.declare), cls: info.cls };
+      }
+    }
+    decoded[type] = { char: r.delegatedTo ? r.first + r.ch : r.ch, info: info };
+  });
   return decoded;
 }
 
-// Las 4 letras de un gcd, para comparar códigos sin depender de la cola variable
+// Los 4 caracteres de estado de un gcd, para comparar códigos sin depender de la cola variable
 function gcdLetters(gcd) {
-  var m = String(gcd || "").match(/^1\d([a-z])\d([a-z])\d([a-z])\d([a-z])/i);
-  return m ? (m[1] + m[2] + m[3] + m[4]).toLowerCase() : null;
+  var s = String(gcd || "");
+  return GCD_RE.test(s) ? s[2] + s[4] + s[6] + s[8] : null;
 }
 
 // =============================================
@@ -4149,7 +4196,7 @@ function renderGcdCalc() {
   if (!raw) return;
   var decoded = decodeGCDString(raw);
   if (!decoded) {
-    consentGcdCalcOut.innerHTML = '<div class="cm-calc-invalid">Formato no reconocido — un gcd válido empieza por 1 y alterna dígito+letra, p.ej. 13p3p3p3p5l1</div>';
+    consentGcdCalcOut.innerHTML = '<div class="cm-calc-invalid">Formato no reconocido — un gcd válido empieza por 1 y sigue con un par de caracteres por señal, p.ej. 13p3p3p3p5l1</div>';
     return;
   }
   Object.keys(decoded).forEach(function (type) {
