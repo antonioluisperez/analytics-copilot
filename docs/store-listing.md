@@ -121,3 +121,17 @@ Aviso de page_view duplicado en el Tag Scanner, sin permisos nuevos.
 **Texto para "Qué hay de nuevo"**:
 > El Tag Scanner avisa si GA4 manda el page_view dos veces para la misma página (GTM y gtag a la
 > vez, dos configuraciones o un page_view manual sin send_page_view: false), con el ID que lo hace.
+
+---
+
+## Actualización v1.6.1 (noviembre 2026)
+
+Arreglo en la lectura del gcd de Consent Mode, sin permisos nuevos.
+
+- Solo cambia cómo se decodifica un texto (el parámetro gcd) que la extensión ya leía. No envía
+  ni guarda nada.
+
+**Texto para "Qué hay de nuevo"**:
+> La calculadora GCD de Consent lee bien los códigos con mayúsculas: señales declaradas o delegadas
+> en otra (por ejemplo ad_user_data que sigue a ad_storage) ya no salen con un estado falso ni como
+> formato no reconocido.
