@@ -127,7 +127,10 @@ const CASOS = [
         if (!/Denegado → Denegado/.test(conUpdate[2]) || !/declarado: permitido/.test(conUpdate[2])) return 'ad_user_data con W: ' + conUpdate[2];
         const delegado = await leer('13p3lPR2l5l1');
         if (delegado.length !== 4) return '13p3lPR2l5l1 sale como formato no reconocido';
+        const cortadas = await ev(`(() => { document.querySelector('details.cm-details').open = true; consentGcdCalcInput.scrollIntoView();
+            return [...consentGcdCalcOut.querySelectorAll('.cm-gcd-meaning')].filter(e => e.scrollWidth > e.clientWidth + 1).length; })()`);
         await foto('consent-gcd');
+        if (cortadas) return cortadas + ' etiquetas cortadas en la calculadora';
         return /ad_storage/.test(delegado[2]) && /denegado/i.test(delegado[2]) ? null : 'ad_user_data delegado: ' + delegado[2];
     }],
     ['Tag Scanner no saca IDs de textos como IMG-12345 o DRAW-99999', async () => {
