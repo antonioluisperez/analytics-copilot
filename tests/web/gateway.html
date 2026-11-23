@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Google tag gateway</title>
+<script>
+  // Simula una web con Google tag gateway: el contenedor se carga desde una ruta
+  // propia (/metrics/?id=GTM-…) y los hits de GA4 salen a /metrics/g/collect, como
+  // en la guía oficial. El servidor de prueba responde 404: basta con la petición.
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QAGATE1234');
+  fetch('/metrics/g/collect?v=2&tid=G-QAGATE1234&_p=1&en=page_view&dl=' + encodeURIComponent(location.href));
+</script>
+<script async src="/metrics/?id=GTM-QAGATE1"></script>
+</head>
+<body><h1>Google tag gateway</h1></body>
+</html>
