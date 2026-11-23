@@ -39,12 +39,15 @@ llega a los usuarios de la extensión.
 8. (10-11) Dijo «no 3» (etiquetas idea/fallo en el repo) y «no 4» (botón «Copiar informe de QA»), sin explicar. La 4 se solapaba con el «Copiar informe» que Consent ya tenía: antes de proponer una función, buscarla en README.md y ARQUITECTURA.md. Proponer poco y concreto, ligado a una noticia oficial o a una petición.
 9. (16-11) Las filas «Pista para el revisor» del equipo de noticias (Feedback para otros agentes) dieron la mejora de la semana junto con su /idea: leerlas siempre, aunque no sean órdenes.
 10. (16-11) La foto del caso de prueba salió con la sección plegada y no se veía nada; al abrirla apareció una etiqueta cortada con «…». Abrir siempre lo que se toca antes de la foto y mirarla.
+11. (17-11) Antonio, tal cual: «a partir de ahora los comentarios q no se vea nada, comentarios super simplificados con el update, q no tenga contexto de nuestro chat ni nada porque sino eso es publico». Todo lo que va al repo público (descripción y comentarios de la PR, notas de versión, «## Origen») dice solo qué cambia, por qué es seguro y la fuente oficial: nada de sus mensajes, Telegram, propuestas, puntuaciones ni candidatas descartadas. Lo interno va en IDEAS.md y en el parte.
+12. (16-11) Dijo «sí 5» la misma noche del parte y publicó la PR #3 sin comentarios: una propuesta de la extensión con documentación oficial y que se ve en un clic le convence rápido.
 3. (03-11) Cuando dos ideas suyas son la misma pieza (enlace + plantillas), van juntas en una PR: una sin la otra no sirve.
 
 ## Registro
 
 | Fecha | Qué hice | Resultado |
 |---|---|---|
+| 2026-11-23 | PR #4 v1.7.0: el Tag Scanner dice desde dónde se sirven las etiquetas de Google (gateway / server-side / directo). Propuesta 5 aprobada | Abierta |
 | 2026-11-16 | PR #3 v1.6.1: Consent lee bien los gcd con mayúsculas (declare y delegación). Idea de Antonio del 12-11 | Fusionada el 16-11 (el mismo día) |
 | 2026-11-09 | PR #2 v1.6.0: aviso de page_view de GA4 duplicado en el Tag Scanner | Fusionada el 09-11 (el mismo día) |
 | 2026-11-03 | PR #1 v1.5.0: enlace «Proponer una mejora» + plantillas de issue | Fusionada el 05-11 |

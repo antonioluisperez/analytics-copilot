@@ -21,7 +21,9 @@ esa semana no hay PR.
 
 | Idea | De dónde sale | Impacto | Encaje | Prueba | Riesgo | Total |
 |---|---|---|---|---|---|---|
-| Tag Scanner: decir si las etiquetas de Google se sirven en primera parte (Google tag gateway en una ruta propia tipo /metrics, o server-side GTM) y por qué ruta; hoy se comprueba a mano en Tag Assistant > Hits Sent. Google lo liga a Conversion Lift y Data Strength (noticias 13 y 16-11) | Investigación 16-11 (GTM y server-side) + docs oficiales (developers.google.com/tag-platform/tag-manager/gateway/setup-guide) | 2 | 3 | 3 | 2 | 10 |
+| Tag Scanner: avisar de «instalación no soportada»: un ID G-/AW-/DC- cargado por gtm.js (gtm.js?id=G-…) o gtag('config') sueltos junto a gtm.js. Google actualiza los snippets para que GTM deje de esperar esos config (anunciado 17-11 para enero de 2027, «pronto» en la ayuda) y avisó por correo a los contenedores afectados | Pista del 18-11 + noticia [Ext] del 18-11 (Antonio la marcó útil en la encuesta) + support.google.com/tagmanager/answer/17231523, confirmado el 23-11 | 3 | 3 | 3 | 2 | 11 |
+| Cookie Audit > Conversiones: avisar si una conversión de Google Ads sale sin transaction_id (oid): si se recarga la página de gracias se cuenta dos veces. Hoy se enseña cuando está, pero no se avisa cuando falta | Investigación 23-11 (Google Ads y atribución); Google Ads recomienda el transaction ID para deduplicar | 2 | 3 | 3 | 3 | 11 |
+| «Desde dónde se sirven» (v1.7.0): cubrir también los hits de Google Ads (/pagead/conversion, /ccm/collect) además de los de GA4, para ver si la conversión de Ads pasa por el gateway | Investigación 23-11, sigue a v1.7.0 | 2 | 3 | 2 | 3 | 10 |
 | Consent > Pings: mostrar el gcd decodificado de cada hit (al tocarlo) y avisar si un hit sale con Consent Mode inactivo (bandera de la posición 9 del gcd) o con GPC; sigue a v1.6.1 | Investigación 16-11 (Consent, librería consent-string) | 2 | 3 | 2 | 2 | 9 |
 | GTM: avisar si el mismo contenedor GTM-XXXX se carga dos veces en la página (comprobar antes si el Tag Scanner ya lo hace) | Investigación 16-11 (GTM) | 2 | 3 | 2 | 3 | 10 |
 | Consent: aviso cuando un hit de Google (GA4/Ads) sale antes del `consent default` (sin gcs o con hora anterior). Google pide el default antes de cualquier config/event. (09-11: repuntuada, depende de leer `gcd`, cuyo formato Google no documenta → riesgo de avisos falsos) | Investigación 03-11 (Consent Mode) | 3 | 3 | 2 | 1 | 9 |
@@ -39,6 +41,7 @@ esa semana no hay PR.
 
 | Idea | Versión |
 |---|---|
+| Tag Scanner dice desde dónde se sirven las etiquetas de Google: ruta propia (gateway / server-side) o directo a Google, y avisa si hay hits de GA4 que se saltan la ruta propia (propuesta 5, «sí 5» del 16-11) | v1.7.0 (PR #4, abierta 23-11) |
 | Consent lee el gcd por bits: mayúsculas con declare y delegación, sin estados falsos (idea de Antonio, 12-11) | v1.6.1 (PR #3, fusionada 16-11) |
 | Tag Scanner avisa del `page_view` de GA4 duplicado (mismo ID y URL, ≤ 3 s) | v1.6.0 (PR #2, fusionada 09-11) |
 | Enlace "Proponer una mejora" en Inicio + plantillas de issue (idea / fallo) | v1.5.0 (PR #1, fusionada 05-11) |
@@ -59,3 +62,5 @@ esa semana no hay PR.
 | page_view al volver con bfcache en GTM (9-11) | Comportamiento buscado de GTM; el aviso de duplicado (≤ 3 s, misma URL) no salta al volver atrás (16-11) |
 | Geolocalización de google_tag_data.xcd (Thyngster, 10-11) | No documentada por Google y no cambia una comprobación de QA hoy (16-11) |
 | Conversion Lift, ValueTrack de AI Max, EDPB interés legítimo (semana 10-16/11) | No se ven desde el navegador (16-11) |
+| Safari arregla los beacons de pagehide (Technology Preview 257, 20-11) | La extensión solo corre en Chrome: no se ve desde ella (23-11) |
+| Search Journey Awareness, Ads Decoded A/B, Business Hub de ChatGPT, Shopify network_access y abandonedCheckoutUrl (semana 17-23/11) | No se ven desde el navegador o no cambian una comprobación de QA en la web (23-11) |
