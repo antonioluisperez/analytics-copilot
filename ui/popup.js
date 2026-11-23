@@ -1223,8 +1223,20 @@ function scanPageTags() {
     });
   } catch (e) {}
 
+  // Cargadores de Google y hits de GA4 que ha pedido la página, para saber desde
+  // qué dominio se sirven (Google tag gateway, server-side o directo a Google)
+  var googleResources = [];
+  try {
+    performance.getEntriesByType("resource").forEach(function (e) {
+      if (/\/g\/collect|gtm\.js|gtag\/js|[?&]id=(GTM|GT|G|AW|DC)-/.test(e.name)) {
+        googleResources.push({ url: e.name, type: e.initiatorType });
+      }
+    });
+  } catch (e) {}
+
   return {
     ga4PageViews: ga4PageViews,
+    googleResources: googleResources,
     scripts: scriptSrcs,
     iframes: iframeSrcs,
     inline: inlineScripts,
@@ -1237,6 +1249,70 @@ function scanPageTags() {
     ttqPixelIds: ttqPixelIds,
     url: location.href,
   };
+}
+
+// Desde dónde se sirven las etiquetas de Google. Con Google tag gateway la web carga
+// la etiqueta desde una ruta propia (example.com/metrics/?id=GTM-…) y los hits salen
+// a esa ruta (example.com/metrics/g/collect); con server-side GTM, normalmente desde
+// un subdominio (sgtm.example.com/g/collect). Es lo que Google manda comprobar en
+// Tag Assistant > Hits Sent. Se mira la URL de los cargadores (gtm.js, gtag/js o un
+// script con ?id=GTM-/G-/AW-…) y de los hits de GA4 (/g/collect).
+const GOOGLE_TAG_DOMAINS = /(^|\.)(googletagmanager\.com|google-analytics\.com|analytics\.google\.com|doubleclick\.net|google\.com|googleadservices\.com|googlesyndication\.com)$/i;
+function googleTagRoutes(pageUrl, scripts, resources) {
+  let pageHost = "";
+  try { pageHost = new URL(pageUrl).hostname; } catch (e) {}
+  const propias = new Map();
+  const directo = { carga: false, hits: false };
+  const items = (scripts || []).map((url) => ({ url, type: "script" })).concat(resources || []);
+  for (const it of items) {
+    let u;
+    try { u = new URL(it.url); } catch (e) { continue; }
+    if (!/^https?:$/.test(u.protocol)) continue;
+    const p = u.pathname;
+    const idParam = u.searchParams.get("id") || "";
+    const hit = /\/g\/collect$/.test(p);
+    const cargador = !hit && (/\/(gtm\.js|gtag\/js)$/.test(p) ||
+      (it.type === "script" && /^(GTM|GT|G|AW|DC)-[A-Z0-9]+$/i.test(idParam)));
+    if (!hit && !cargador) continue;
+    if (GOOGLE_TAG_DOMAINS.test(u.hostname)) { directo[hit ? "hits" : "carga"] = true; continue; }
+    const ruta = (hit ? p.slice(0, -"/g/collect".length) : p.replace(/\/(gtm\.js|gtag\/js)$/, "")).replace(/\/$/, "");
+    const clave = u.hostname + ruta;
+    if (!propias.has(clave)) {
+      const mismo = caGetETLDplus1(u.hostname) === caGetETLDplus1(pageHost);
+      propias.set(clave, {
+        ruta: clave + "/",
+        tipo: u.hostname === pageHost ? "misma" : mismo ? "subdominio" : "externo",
+        carga: false, hits: false, ids: new Set(),
+      });
+    }
+    const r = propias.get(clave);
+    if (hit) { r.hits = true; if (u.searchParams.get("tid")) r.ids.add(u.searchParams.get("tid")); }
+    else { r.carga = true; if (idParam) r.ids.add(idParam); }
+  }
+  return { propias: [...propias.values()].map((r) => ({ ...r, ids: [...r.ids] })), directo };
+}
+
+function googleTagRoutesHtml(rutas) {
+  const d = rutas.directo;
+  if (!rutas.propias.length && !d.carga && !d.hits) return "";
+  const TIPOS = {
+    misma: "en la propia web: Google tag gateway o server-side en una ruta",
+    subdominio: "en un subdominio propio: lo típico de server-side (sGTM)",
+    externo: "en otro dominio: un servidor intermedio (proxy o server-side de un proveedor)",
+  };
+  let h = `<div class="tags-route"><div class="tags-route-title">Desde dónde se sirven las etiquetas de Google</div>`;
+  for (const r of rutas.propias) {
+    const que = [r.carga ? "carga la etiqueta" : "", r.hits ? "recibe los hits de GA4" : ""].filter(Boolean).join(" y ");
+    h += `<div class="tags-route-item">🛡 <code>${escapeHtml(r.ruta)}</code> ${escapeHtml(que)}${r.ids.length ? " (" + escapeHtml(r.ids.join(", ")) + ")" : ""}, ${escapeHtml(TIPOS[r.tipo])}.</div>`;
+  }
+  if (rutas.propias.length && d.hits) {
+    h += `<div class="tags-route-item">↗ También salen hits de GA4 directos a Google: alguna etiqueta no pasa por la ruta propia.</div>`;
+  } else if (rutas.propias.length && d.carga) {
+    h += `<div class="tags-route-item">↗ La etiqueta se descarga de googletagmanager.com; los hits pasan por la ruta propia.</div>`;
+  } else if (!rutas.propias.length) {
+    h += `<div class="tags-route-item">↗ Directo a Google (googletagmanager.com, google-analytics.com): sin Google tag gateway ni server-side.</div>`;
+  }
+  return h + `</div>`;
 }
 
 // page_view de GA4 duplicados: el mismo ID de medición manda page_view para la
@@ -1489,6 +1565,7 @@ async function runTagScan() {
         </div>`;
       }
 
+      if (catKey === "google") html += googleTagRoutesHtml(googleTagRoutes(ctx.url, ctx.scripts, ctx.googleResources));
       html += `</div>`;
     }
 
