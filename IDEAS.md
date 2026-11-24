@@ -41,7 +41,7 @@ esa semana no hay PR.
 
 | Idea | Versión |
 |---|---|
-| Tag Scanner dice desde dónde se sirven las etiquetas de Google: ruta propia (gateway / server-side) o directo a Google, y avisa si hay hits de GA4 que se saltan la ruta propia (propuesta 5, «sí 5» del 16-11) | v1.7.0 (PR #4, abierta 23-11) |
+| Tag Scanner dice desde dónde se sirven las etiquetas de Google: ruta propia (gateway / server-side) o directo a Google, y avisa si hay hits de GA4 que se saltan la ruta propia (propuesta 5, «sí 5» del 16-11) | v1.7.0 (PR #4, fusionada 24-11) |
 | Consent lee el gcd por bits: mayúsculas con declare y delegación, sin estados falsos (idea de Antonio, 12-11) | v1.6.1 (PR #3, fusionada 16-11) |
 | Tag Scanner avisa del `page_view` de GA4 duplicado (mismo ID y URL, ≤ 3 s) | v1.6.0 (PR #2, fusionada 09-11) |
 | Enlace "Proponer una mejora" en Inicio + plantillas de issue (idea / fallo) | v1.5.0 (PR #1, fusionada 05-11) |
