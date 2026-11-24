@@ -200,6 +200,22 @@ const CASOS = [
         if (!avisos.some((a) => a.includes('G-DUPLI1234') && a.includes('2 veces'))) return 'sin aviso para G-DUPLI1234: ' + JSON.stringify(avisos);
         return avisos.some((a) => a.includes('G-UNICO5678')) ? 'aviso falso para G-UNICO5678' : null;
     }],
+    ['Tag Scanner dice si las etiquetas de Google salen por una ruta propia (gateway) o directas a Google', async () => {
+        await navegar(WEB + 'gateway.html');
+        await ev("navigateTo('tags'); runTagScan()"); await espera(1000);
+        await ev("document.querySelector('#tagsResults .tags-route')?.scrollIntoView(); 1");
+        await foto('tags-gateway');
+        const propia = await ev("document.querySelector('#tagsResults .tags-route')?.textContent || ''");
+        const cortado = await ev("[...document.querySelectorAll('#tagsResults .tags-route *')].some(e => e.scrollWidth > e.clientWidth + 1)");
+        await navegar(WEB);
+        await ev("runTagScan()"); await espera(1000);
+        const directa = await ev("document.querySelector('#tagsResults .tags-route')?.textContent || ''");
+        if (!/localhost\/metrics\//.test(propia) || !/carga la etiqueta y recibe los hits/.test(propia)) return 'sin ruta propia: ' + JSON.stringify(propia);
+        if (!/GTM-QAGATE1/.test(propia) || !/G-QAGATE1234/.test(propia) || !/propia web/.test(propia)) return 'ruta sin IDs o sin tipo: ' + propia;
+        if (/Directo a Google/.test(propia)) return 'dice «directo» con gateway';
+        if (cortado) return 'texto cortado en la caja de la ruta';
+        return /Directo a Google/.test(directa) && !/🛡/.test(directa) ? null : 'la web normal no sale como directa: ' + JSON.stringify(directa);
+    }],
     ['Cookie Audit registra el salto cross-domain aunque Chrome duerma el worker', async () => {
         await ev("navigateTo('crossdomain'); caStartAudit(); 1"); await espera(2500);
         await cdp('Target.closeTarget', { targetId: popT }); await espera(1500);

@@ -46,6 +46,12 @@ Convenciones del proyecto y reglas que no hay que repetir: `CLAUDE.md`.
 - Aviso de `page_view` de GA4 duplicado en la tarjeta de GA4 (`ga4DuplicatePageViews`): mismo ID
   y misma `dl` en hits distintos separados ≤ 3 s, leídos de las performance entries. Dos IDs
   distintos o la misma URL visitada otra vez más tarde (SPA) no avisan
+- «Desde dónde se sirven las etiquetas de Google» al final de la sección Google
+  (`googleTagRoutes`): mira los cargadores (`gtm.js`, `gtag/js` o un script con `?id=GTM-/G-/AW-…`)
+  y los hits `/g/collect` de los scripts y las performance entries. Los que no van a un dominio de
+  Google son una ruta propia: en la misma web (Google tag gateway o sGTM en una ruta), en un
+  subdominio (lo típico de sGTM) o en otro dominio. Avisa si con ruta propia siguen saliendo hits
+  de GA4 directos a Google
 
 ### 3. Time Travel
 - Sobreescribe `window.Date` con una fecha/hora personalizada

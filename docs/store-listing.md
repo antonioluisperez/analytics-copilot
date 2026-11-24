@@ -135,3 +135,18 @@ Arreglo en la lectura del gcd de Consent Mode, sin permisos nuevos.
 > La calculadora GCD de Consent lee bien los códigos con mayúsculas: señales declaradas o delegadas
 > en otra (por ejemplo ad_user_data que sigue a ad_storage) ya no salen con un estado falso ni como
 > formato no reconocido.
+
+---
+
+## Actualización v1.7.0 (noviembre 2026)
+
+El Tag Scanner dice desde dónde se sirven las etiquetas de Google, sin permisos nuevos.
+
+- Lee las direcciones de los scripts de la página y de las peticiones que ya ha hecho
+  (Performance API, en la pestaña activa y con los permisos de host ya concedidos). No envía
+  ni guarda nada.
+
+**Texto para "Qué hay de nuevo"**:
+> El Tag Scanner dice si las etiquetas de Google se sirven desde el propio dominio (Google tag
+> gateway o server-side) y por qué ruta, o si van directas a Google. También avisa si parte de
+> los hits de GA4 se salta la ruta propia.
