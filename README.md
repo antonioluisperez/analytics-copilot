@@ -30,8 +30,6 @@ Cada agente tiene dos capas:
 |---|---|---|
 | 🟢 Solo | Las secciones del manual marcadas 🟢: fuentes, temas de investigación, formato, orden de los pasos, casos de prueba, lecciones | Lo cambian, lo apuntan en `CAMBIOS.md` y lo cuentan en su mensaje de Telegram |
 | 🟠 Con permiso | Las secciones marcadas 🟠 (umbral, voz de marca, qué se envía o publica) y todo lo que toque a otro agente | Lo proponen por Telegram con "💡 Propuesta" y lo aplican cuando Antonio responde "sí" |
-| 🔴 Nunca | Publicar sin Antonio, la rama main, claves, conectores, su constitución, el documento del agente de noticias | Prohibido |
+| 🔴 Nunca | Publicar sin Antonio, la rama main, claves, conectores, su constitución, la base de datos del equipo de noticias fuera de sus funciones | Prohibido |
 
-Antonio habla con cada agente respondiendo (Responder / citar) al mensaje concreto de ese agente en Telegram: 📊 noticias, 🔧 revisor, ✍️ posts. También tiene comandos: /linkedin (guardar material en la biblioteca), /post (idea de post), /idea (idea para la extensión) y /ayuda (la chuleta). Un mensaje suelto, sin citar, cuenta como feedback de noticias. El agente de noticias pasa esas respuestas a la
-sección "Feedback para otros agentes" de su documento, y los agentes la leen en su
-siguiente ejecución.
+Antonio habla con cada agente respondiendo (Responder / citar) al mensaje concreto de ese agente en Telegram: 📊 noticias, 🔧 revisor, ✍️ posts. También tiene comandos: /linkedin (guardar material en la biblioteca), /post (idea de post), /idea (idea para la extensión) y /ayuda (la chuleta). Un mensaje suelto, sin citar, cuenta como feedback de noticias. El equipo de noticias pasa esas respuestas a su base de datos, y los agentes las leen en su siguiente ejecución.

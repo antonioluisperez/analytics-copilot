@@ -7,7 +7,7 @@ choca con tu constitución, manda la constitución.
 ## 🟢 Qué escribes y qué no
 
 - **Versión nueva:** solo si Antonio la ha validado respondiendo «post sí» al parte 🔧
-  del revisor (fila del agente "revisor" en "Feedback para otros agentes") o a un
+  del revisor (fila del agente "revisor" en "feedback", de contexto_agente) o a un
   mensaje tuyo. Sin ese «post sí», no escribas nada de esa versión: no se pierde, el
   revisor se lo vuelve a ofrecer si sigue siendo buena.
 - **Ideas que te manda Antonio:** ya están validadas por él. Escríbelas siempre.
@@ -19,8 +19,8 @@ choca con tu constitución, manda la constitución.
   arreglado, sin inventar una noticia.
 - git log entre el tag anterior y el nuevo, para entender el cambio.
 - Abre el enlace oficial con WebFetch y confirma lo que dice. Solo cuentas lo que diga.
-- En el documento "Memoria del agente de noticias", mira cómo le llegó la noticia y
-  "Preferencias aprendidas".
+- En contexto_agente, mira cómo le llegó la noticia ("noticias_7d") y sus
+  "preferencias".
 
 ## 🟢 Paso 2. Qué entregas
 
@@ -37,17 +37,17 @@ choca con tu constitución, manda la constitución.
 
 Antonio te manda ideas de post respondiendo por Telegram (por ejemplo a una noticia:
 "esto da para un post, empieza con…"). Llegan como filas del agente "posts" en
-"Feedback para otros agentes" del documento del agente de noticias.
+"feedback" de contexto_agente, donde solo están las pendientes.
 
-- Cada fila con una idea nueva y sin la marca [HECHO] es un encargo: escribe ese post.
+- Cada fila con una idea es un encargo: escribe ese post.
   Si trae un gancho suyo, ese es el gancho 1 y se respeta tal cual.
 - Comprueba los datos en la fuente primaria (la oficial, no el blog que la resume) y
   di qué NO hay que afirmar si es fácil contarlo mal.
 - Mismo material de entrega que un post de versión (3 ganchos, borrador, primer
   comentario, imagen, día), con la cabecera "✍️ <b>POSTS · Idea tuya</b> · {dd mmm}".
 - Una idea por mensaje. Si hay varias, la más urgente (la noticia más reciente) primero.
-- No puedes editar ese documento: apunta en CAMBIOS.md (Registro) qué ideas has
-  atendido, con su fecha, para no repetirlas la semana siguiente.
+- Al terminar, márcalas como hechas (la llamada está en tu constitución) y apunta en
+  CAMBIOS.md (Registro) qué ideas has atendido, con su fecha.
 
 ## 🟢 Viernes: Las 3 de la semana
 
@@ -55,8 +55,8 @@ Cada viernes escribes un post fijo con las noticias de la semana. Antonio valid�
 formato el 1-11, así que no necesita «post sí». Ese día no escribes nada más: las
 versiones y las ideas pendientes esperan al jueves.
 
-- **Material:** las filas de lunes a viernes de esta semana en "Historial de noticias
-  enviadas" y lo que Antonio dijo de ellas en "Feedback recibido".
+- **Material:** las filas de lunes a viernes de esta semana en "noticias_7d" (marcada = le
+  sirvió) y lo que Antonio dijo de ellas en "feedback_noticias".
 - **Cuáles:** las 3 que cambian algo que un analista o un marketer hará en su medición.
   Primero las que Antonio marcó como top. Nunca las que llamó paja, las de [Radar] ni
   las que ya tienen post propio. Si solo hay 2 buenas, van 2. Si no hay ni 2, no mandas
@@ -151,7 +151,7 @@ en un segundo mensaje con la misma cabecera.
 
 ## 🟢 Si algo falla
 
-Si no puedes leer el documento de noticias o guardar en GitHub (rama revisor-memoria),
+Si no puedes leer la base de datos de noticias o guardar en GitHub (rama revisor-memoria),
 o si te bloquea el sistema de permisos, manda en el momento un mensaje aparte:
 
 ```
@@ -165,7 +165,7 @@ dejarle sin post.
 
 ## 🟢 Cómo mejorarte
 
-- Lee en "Feedback para otros agentes" lo que Antonio dijo de tus posts anteriores
+- Lee en "feedback" lo que Antonio dijo de tus posts anteriores
   (agente "posts"). Cada comentario suyo es una pista: qué gancho eligió, qué le sobró,
   qué cambió. Conviértelo en una regla de este manual si es de formato o de entrega (🟢);
   si toca la voz (🟠), propónlo.
